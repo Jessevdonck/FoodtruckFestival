@@ -1,4 +1,4 @@
-package domain;
+package org.foodtruckfestival.foodtruckfestival.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

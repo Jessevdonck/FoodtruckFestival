@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Festivals</title>
+</head>
+<body>
+<h1>Overzicht van festivals</h1>
+<table>
+    <tr>
+        <th>Naam</th>
+        <th>Locatie</th>
+        <th>Categorie</th>
+        <th>Datum en Tijd</th>
+        <th>Beschikbare Tickets</th>
+        <th>Prijs</th>
+        <th>Details</th>
+    </tr>
+    <tr th:each="festival : ${festivals}">
+        <td th:text="${festival.name}"></td>
+        <td th:text="${festival.location}"></td>
+        <td th:text="${festival.categorie}"></td>
+        <td th:text="${festival.dateTime}"></td>
+        <td th:text="${festival.availableTickets}"></td>
+        <td th:text="${festival.price != null ? festival.price + ' €' : 'Niet beschikbaar'}"></td>
+        <td><a th:href="@{/festivals/detail(id=${festival.id})}">Bekijk</a></td>
+    </tr>
+</table>
+</body>
+</html>
