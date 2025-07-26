@@ -1,6 +1,7 @@
 package org.foodtruckfestival.foodtruckfestival.service;
 
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
+import org.foodtruckfestival.foodtruckfestival.domain.Registration;
 import org.foodtruckfestival.foodtruckfestival.dto.FestivalDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,10 @@ public List<FestivalDTO> fetchFestivalOverview() {
 return festivalRepository.findAll().stream()
         .sorted(Comparator.comparing(Festival::getDateTime))
         .map(festival -> {
-            int registrations = festival.getRegistrations() != null ? festival.getRegistrations().size() : 0;
-            int availableTickets = festival.getMaxTickets() - registrations;
+            int registrations = festival.getRegistrations().stream().mapToInt(r -> r.aantalTickets).sum();
+            int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
             boolean isFuture = festival.getDateTime().isAfter(LocalDateTime.now());
+
             return new FestivalDTO(
                     festival.getId(),
                     festival.getName(),
@@ -55,10 +57,39 @@ return festivalRepository.findAll().stream()
                     festival.getCategorie().toString(),
                     festival.getDateTime(),
                     availableTickets,
-                    isFuture ? festival.getPrice() : null // Alleen tonen als nog niet gepasseerd
+                    isFuture ? festival.getPrice() : null,
+                    registrations,
+                    festival.getFoodtrucks()
             );
         })
         .collect(Collectors.toList());
 }
 
-}
+    public int getAvailableTickets(Long festivalId)
+        {
+            int available = festivalRepository.findAvailableTicketsByFestivalId(festivalId);
+
+            return available;
+        }
+
+    @Override
+    public FestivalDTO findFestivalDTOById(Long id) {
+    Festival festival = festivalRepository.findById(id).orElse(null);
+
+    int registrationsCount = festival.getRegistrations().stream().mapToInt(r -> r.aantalTickets).sum();
+    int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
+
+    return new FestivalDTO(
+            festival.getId(),
+            festival.getName(),
+            festival.getLocation(),
+            festival.getCategorie().toString(),
+            festival.getDateTime(),
+            availableTickets,
+            festival.getPrice(),
+            registrationsCount,
+            festival.getFoodtrucks()
+    );
+    }
+
+    }

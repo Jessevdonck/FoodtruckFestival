@@ -11,4 +11,6 @@ List<Festival> findAll();
 Festival save(Festival festival);
 void deleteById(Long id);
 List<FestivalDTO> fetchFestivalOverview();
+int getAvailableTickets(Long festivalId);
+public FestivalDTO findFestivalDTOById(Long id);
 }

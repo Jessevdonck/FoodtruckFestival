@@ -18,9 +18,10 @@ public class Registration
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int aantalTickets;
+    public int aantalTickets;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private MyUser user;
 
     @ManyToOne

@@ -22,7 +22,7 @@
         <td th:text="${festival.dateTime}"></td>
         <td th:text="${festival.availableTickets}"></td>
         <td th:text="${festival.price != null ? festival.price + ' €' : 'Niet beschikbaar'}"></td>
-        <td><a th:href="@{/festivals/detail(id=${festival.id})}">Bekijk</a></td>
+        <td><a th:href="@{/festivals/{id}(id=${festival.id})}">Bekijk</a></td>
     </tr>
 </table>
 </body>

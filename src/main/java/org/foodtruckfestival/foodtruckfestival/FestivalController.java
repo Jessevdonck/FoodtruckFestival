@@ -1,7 +1,6 @@
 package org.foodtruckfestival.foodtruckfestival;
 
 import lombok.extern.slf4j.Slf4j;
-import org.foodtruckfestival.foodtruckfestival.domain.Festival;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,9 +27,7 @@ return "festivals";
 
 @GetMapping("/{id}")
 public String festivalDetails(@PathVariable Long id, Model model) {
-Festival festival = festivalService.findById(id);
-model.addAttribute("festival", festival);
-return "festivalDetail";
+model.addAttribute("festival", festivalService.findFestivalDTOById(id));
+return "festivalDetails";
 }
-
 }

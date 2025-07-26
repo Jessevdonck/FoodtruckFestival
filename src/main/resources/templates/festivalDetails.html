@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Festival Detail</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1 th:text="${festival.name}">Festival naam</h1>
+
+<ul>
+    <li><strong>Locatie:</strong> <span th:text="${festival.location}">Locatie</span></li>
+    <li><strong>Categorie:</strong> <span th:text="${festival.categorie}">Categorie</span></li>
+    <li><strong>Datum & Tijd:</strong> <span th:text="${#temporals.format(festival.dateTime, 'dd-MM-yyyy HH:mm')}">Datum & Tijd</span></li>
+    <li><strong>Prijs:</strong> €<span th:text="${festival.price}">0.00</span></li>
+
+    <li><strong>Beschikbare tickets:</strong> <span th:text="${festival.availableTickets}">0</span></li>
+    <li><strong>Aantal inschrijvingen:</strong> <span th:text="${festival.registrationCount}">0</span></li>
+</ul>
+
+<h2>Foodtrucks</h2>
+<ul>
+    <li th:each="truck : ${festival.foodtrucks}" th:text="${truck}">Truck naam</li>
+</ul>
+
+<p>
+    <a th:href="@{/festivals}">Terug naar festivaloverzicht</a>
+</p>
+</body>
+</html>
