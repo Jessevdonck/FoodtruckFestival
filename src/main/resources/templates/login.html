@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{login.title}">Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<!-- Main Content -->
+<div class="main-container">
+    <div class="login-card">
+        <!-- Header -->
+        <div class="login-header">
+            <h2 class="login-title" th:text="#{login.header}">Log in with your credentials</h2>
+        </div>
+
+        <!-- Errors -->
+        <div class="alert alert-error" th:if="${error}">
+            <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+            </svg>
+            <span th:text="${error}">Error message</span>
+        </div>
+
+        <!-- Login Form -->
+        <form name="loginForm" method="post" th:action="@{/login}" class="login-form">
+            <div class="form-group">
+                <label for="username" class="form-label" th:text="#{login.usernameLabel}">Username</label>
+                <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        class="form-input"
+                        placeholder="Enter your username"
+                        required
+                        autocomplete="username"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label" th:text="#{login.passwordLabel}">Password</label>
+                <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        class="form-input"
+                        placeholder="Enter your password"
+                        required
+                        autocomplete="current-password"
+                />
+            </div>
+
+            <button type="submit" name="submit" class="btn btn-primary btn-full">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                </svg>
+                <span th:text="#{login.submitButton}">Sign In</span>
+            </button>
+
+            <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

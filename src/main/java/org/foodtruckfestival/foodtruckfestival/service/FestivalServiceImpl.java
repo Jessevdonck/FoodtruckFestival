@@ -4,6 +4,9 @@ import org.foodtruckfestival.foodtruckfestival.domain.Festival;
 import org.foodtruckfestival.foodtruckfestival.domain.Registration;
 import org.foodtruckfestival.foodtruckfestival.dto.FestivalDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.foodtruckfestival.foodtruckfestival.exceptions.FestivalNotFoundException;
+import org.foodtruckfestival.foodtruckfestival.exceptions.NoFestivalsException;
+import org.foodtruckfestival.foodtruckfestival.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.FestivalRepository;
@@ -23,7 +26,7 @@ private FestivalRepository festivalRepository;
 
 @Override
 public Festival findById(Long id) {
-return festivalRepository.findById(id).orElse(null);
+return festivalRepository.findById(id).orElseThrow(()->new FestivalNotFoundException(id.intValue()));
 }
 
 @Override
@@ -43,26 +46,31 @@ festivalRepository.deleteById(id);
 
 @Override
 public List<FestivalDTO> fetchFestivalOverview() {
-return festivalRepository.findAll().stream()
-        .sorted(Comparator.comparing(Festival::getDateTime))
-        .map(festival -> {
-            int registrations = festival.getRegistrations().stream().mapToInt(r -> r.aantalTickets).sum();
-            int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
-            boolean isFuture = festival.getDateTime().isAfter(LocalDateTime.now());
+    List<Festival> festivals = festivalRepository.findAll();
+    if (festivals.isEmpty()) {
+        throw new NoFestivalsException("No Festivals found");
+    }
 
-            return new FestivalDTO(
-                    festival.getId(),
-                    festival.getName(),
-                    festival.getLocation(),
-                    festival.getCategorie().toString(),
-                    festival.getDateTime(),
-                    availableTickets,
-                    isFuture ? festival.getPrice() : null,
-                    registrations,
-                    festival.getFoodtrucks()
-            );
-        })
-        .collect(Collectors.toList());
+    return festivals.stream()
+            .sorted(Comparator.comparing(Festival::getDateTime))
+            .map(festival -> {
+                int registrations = festival.getRegistrations().stream().mapToInt(r -> r.aantalTickets).sum();
+                int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
+                boolean isFuture = festival.getDateTime().isAfter(LocalDateTime.now());
+
+                return new FestivalDTO(
+                        festival.getId(),
+                        festival.getName(),
+                        festival.getLocation(),
+                        festival.getCategorie().toString(),
+                        festival.getDateTime(),
+                        availableTickets,
+                        isFuture ? festival.getPrice() : null,
+                        registrations,
+                        festival.getFoodtrucks()
+                );
+            })
+            .collect(Collectors.toList());
 }
 
     public int getAvailableTickets(Long festivalId)
@@ -74,7 +82,7 @@ return festivalRepository.findAll().stream()
 
     @Override
     public FestivalDTO findFestivalDTOById(Long id) {
-    Festival festival = festivalRepository.findById(id).orElse(null);
+    Festival festival = festivalRepository.findById(id).orElseThrow(()->new FestivalNotFoundException(id.intValue()));
 
     int registrationsCount = festival.getRegistrations().stream().mapToInt(r -> r.aantalTickets).sum();
     int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());

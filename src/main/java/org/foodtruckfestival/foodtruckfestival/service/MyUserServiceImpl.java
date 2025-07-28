@@ -1,7 +1,9 @@
 package org.foodtruckfestival.foodtruckfestival.service;
 
 import org.foodtruckfestival.foodtruckfestival.domain.MyUser;
+import org.foodtruckfestival.foodtruckfestival.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.MyUserRepository;
 
@@ -28,7 +30,13 @@ public class MyUserServiceImpl implements MyUserService
     @Override
     public MyUser findByUsername(String username)
         {
-        return myUserRepository.findByUsername(username);
+            MyUser myUser = myUserRepository.findByUsername(username);
+
+            if(myUser==null)
+            {
+                throw new UserNotFoundException();
+            }
+            return myUser;
         }
 
     @Override

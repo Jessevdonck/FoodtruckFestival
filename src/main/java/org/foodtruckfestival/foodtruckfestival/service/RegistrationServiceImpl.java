@@ -1,6 +1,7 @@
 package org.foodtruckfestival.foodtruckfestival.service;
 
 import org.foodtruckfestival.foodtruckfestival.domain.Registration;
+import org.foodtruckfestival.foodtruckfestival.exceptions.RegistrationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.RegistrationRepository;
@@ -19,7 +20,7 @@ this.registrationRepository = registrationRepository;
 
 @Override
 public Registration findById(Long id) {
-return registrationRepository.findById(id).orElse(null);
+    return registrationRepository.findById(id).orElseThrow(()->new RegistrationNotFoundException(id));
 }
 
 @Override

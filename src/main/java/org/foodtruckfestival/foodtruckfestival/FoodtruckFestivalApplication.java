@@ -17,8 +17,8 @@ public class FoodtruckFestivalApplication {
 		SpringApplication.run(FoodtruckFestivalApplication.class, args);
 	}
 
-@Bean
-FestivalService festivalService() {
-		return new FestivalServiceImpl();
-	}
+	@Bean
+	FestivalService festivalService() {
+			return new FestivalServiceImpl();
+		}
 }

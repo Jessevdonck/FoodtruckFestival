@@ -1,6 +1,7 @@
 package org.foodtruckfestival.foodtruckfestival.service;
 
 import org.foodtruckfestival.foodtruckfestival.domain.Review;
+import org.foodtruckfestival.foodtruckfestival.exceptions.ReviewNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.ReviewRepository;
@@ -19,7 +20,7 @@ this.reviewRepository = reviewRepository;
 
 @Override
 public Review findById(Long id) {
-return reviewRepository.findById(id).orElse(null);
+return reviewRepository.findById(id).orElseThrow(()->new ReviewNotFoundException(id));
 }
 
 @Override
