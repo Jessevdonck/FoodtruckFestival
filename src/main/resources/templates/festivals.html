@@ -1,29 +1,83 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Festivals</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festivals - Overzicht</title>
+    <link rel="stylesheet" th:href="@{/css/festivals.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-<h1>Overzicht van festivals</h1>
-<table>
-    <tr>
-        <th>Naam</th>
-        <th>Locatie</th>
-        <th>Categorie</th>
-        <th>Datum en Tijd</th>
-        <th>Beschikbare Tickets</th>
-        <th>Prijs</th>
-        <th>Details</th>
-    </tr>
-    <tr th:each="festival : ${festivals}">
-        <td th:text="${festival.name}"></td>
-        <td th:text="${festival.location}"></td>
-        <td th:text="${festival.categorie}"></td>
-        <td th:text="${festival.dateTime}"></td>
-        <td th:text="${festival.availableTickets}"></td>
-        <td th:text="${festival.price != null ? festival.price + ' €' : 'Niet beschikbaar'}"></td>
-        <td><a th:href="@{/festivals/{id}(id=${festival.id})}">Bekijk</a></td>
-    </tr>
-</table>
+<!-- Main Content -->
+<div class="main-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">Festival Overzicht</h1>
+        <p class="page-subtitle">Ontdek de beste festivals en evenementen</p>
+    </div>
+
+    <!-- Festivals Card -->
+    <div class="festivals-card">
+        <div th:if="${festivals != null}">
+            <table class="festivals-table">
+                <thead>
+                <tr>
+                    <th scope="col">Festival</th>
+                    <th scope="col">Locatie</th>
+                    <th scope="col">Categorie</th>
+                    <th scope="col">Datum & Tijd</th>
+                    <th scope="col">Tickets</th>
+                    <th scope="col">Prijs</th>
+                    <th scope="col">Actie</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="festival : ${festivals}">
+                    <td data-label="Festival">
+                        <span class="festival-name" th:text="${festival.name}">Festival Naam</span>
+                    </td>
+                    <td data-label="Locatie">
+                        <span class="festival-location" th:text="${festival.location}">Locatie</span>
+                    </td>
+                    <td data-label="Categorie">
+                        <span class="category-badge" th:text="${festival.categorie}">Categorie</span>
+                    </td>
+                    <td data-label="Datum & Tijd">
+                        <span class="festival-datetime" th:text="${festival.dateTime}">Datum</span>
+                    </td>
+                    <td data-label="Tickets">
+                                <span class="tickets-available"
+                                      th:classappend="${festival.availableTickets < 20} ? 'tickets-low' : (${festival.availableTickets == 0} ? 'tickets-sold-out' : '')"
+                                      th:text="${festival.availableTickets}">100</span>
+                    </td>
+                    <td data-label="Prijs">
+                                <span th:if="${festival.price != null}"
+                                      class="festival-price"
+                                      th:text="${festival.price + ' €'}">€50</span>
+                        <span th:unless="${festival.price != null}"
+                              class="price-unavailable">Niet beschikbaar</span>
+                    </td>
+                    <td data-label="Details">
+                        <a th:href="@{/festivals/{id}(id=${festival.id})}"
+                           class="btn-details"
+                           th:attr="aria-label='Bekijk details van ' + ${festival.name}">
+                            Details
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${festivals == null}" class="empty-state">
+            <div class="empty-state-icon">🎪</div>
+            <h2 class="empty-state-title">Geen festivals gevonden</h2>
+            <p class="empty-state-message">Er zijn momenteel geen festivals beschikbaar. Kom later terug voor nieuwe evenementen!</p>
+        </div>
+    </div>
+</div>
 </body>
 </html>

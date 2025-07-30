@@ -1,0 +1,352 @@
+@import url("variables.css");
+
+/* Reset en Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--neutral-100) 100%);
+    color: var(--neutral-800);
+    line-height: 1.6;
+    min-height: 100vh;
+    font-size: 16px;
+}
+
+/* Main Container */
+.main-container {
+    padding: var(--spacing-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Page Header */
+.page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--neutral-900);
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: -0.025em;
+}
+
+.page-subtitle {
+    color: var(--neutral-600);
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+/* Festivals Card */
+.festivals-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--neutral-200);
+}
+
+.festivals-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+}
+
+/* Table Styles */
+.festivals-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.festivals-table thead {
+    background: var(--neutral-50);
+    border-bottom: 2px solid var(--neutral-200);
+}
+
+.festivals-table th {
+    padding: var(--spacing-lg) var(--spacing-md);
+    text-align: left;
+    font-weight: 600;
+    color: var(--neutral-700);
+    letter-spacing: 0.025em;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.festivals-table td {
+    padding: var(--spacing-lg) var(--spacing-md);
+    border-bottom: 1px solid var(--neutral-200);
+    color: var(--neutral-800);
+    vertical-align: middle;
+}
+
+.festivals-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.festivals-table tbody tr:hover {
+    background: var(--primary-50);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.1);
+}
+
+.festivals-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Festival Name Styling */
+.festival-name {
+    font-weight: 600;
+    color: var(--neutral-900);
+    font-size: 0.9rem;
+}
+
+/* Location Styling */
+.festival-location {
+    color: var(--neutral-600);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.festival-location::before {
+    font-size: 0.75rem;
+}
+
+/* Category Badge */
+.category-badge {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--primary-100);
+    color: var(--primary-700);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Date Time Styling */
+.festival-datetime {
+    color: var(--neutral-700);
+    font-weight: 500;
+}
+
+/* Tickets Available */
+.tickets-available {
+    font-weight: 600;
+    color: var(--success-600);
+}
+
+.tickets-low {
+    color: var(--warning-600);
+}
+
+.tickets-sold-out {
+    color: var(--error-600);
+}
+
+/* Price Styling */
+.festival-price {
+    font-weight: 700;
+    color: var(--neutral-900);
+    font-size: 0.9rem;
+}
+
+.price-unavailable {
+    color: var(--neutral-500);
+    font-style: italic;
+}
+
+/* Action Button */
+.btn-details {
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-details:hover {
+    background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.btn-details::after {
+    content: "→";
+    font-size: 0.875rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    color: var(--neutral-500);
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--neutral-700);
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-message {
+    font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .festivals-table {
+        font-size: 0.8rem;
+    }
+
+    .festivals-table th,
+    .festivals-table td {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: var(--spacing-md);
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .page-subtitle {
+        font-size: 1rem;
+    }
+
+    /* Stack table on mobile */
+    .festivals-table,
+    .festivals-table thead,
+    .festivals-table tbody,
+    .festivals-table th,
+    .festivals-table td,
+    .festivals-table tr {
+        display: block;
+    }
+
+    .festivals-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .festivals-table tr {
+        background: white;
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--spacing-md);
+        padding: var(--spacing-md);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .festivals-table tr:hover {
+        transform: none;
+        box-shadow: var(--shadow-md);
+    }
+
+    .festivals-table td {
+        border: none;
+        border-bottom: 1px solid var(--neutral-200);
+        position: relative;
+        padding: var(--spacing-sm) 0;
+        padding-left: 40%;
+        text-align: right;
+    }
+
+    .festivals-table td:last-child {
+        border-bottom: none;
+        text-align: center;
+        padding-left: 0;
+        padding-top: var(--spacing-md);
+    }
+
+    .festivals-table td:before {
+        content: attr(data-label) ": ";
+        position: absolute;
+        left: 0;
+        width: 35%;
+        padding-right: var(--spacing-sm);
+        white-space: nowrap;
+        font-weight: 600;
+        color: var(--neutral-700);
+        text-align: left;
+    }
+}
+
+@media (max-width: 640px) {
+    .navbar {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .navbar-title {
+        font-size: 1.25rem;
+    }
+}
+
+/* Loading Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.festivals-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Focus Styles for Accessibility */
+.btn-details:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+
+/* Utility Classes */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

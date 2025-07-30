@@ -1,0 +1,525 @@
+@import url("variables.css");
+
+/* Reset en Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--neutral-100) 100%);
+    color: var(--neutral-800);
+    line-height: 1.6;
+    min-height: 100vh;
+    font-size: 16px;
+}
+
+/* Navigation Styles */
+.navbar {
+    background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-900) 100%);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
+    repeat;
+    pointer-events: none;
+}
+
+.navbar-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Main Container */
+.main-container {
+    padding: var(--spacing-xl);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Back Button */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--neutral-600);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    background: white;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--neutral-200);
+}
+
+.back-button:hover {
+    background: var(--neutral-50);
+    color: var(--primary-600);
+    transform: translateX(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.back-button::before {
+    content: "←";
+    font-size: 1.2rem;
+}
+
+/* Festival Header */
+.festival-header {
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    padding: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--neutral-200);
+}
+
+.festival-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+}
+
+.festival-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--neutral-900);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: -0.025em;
+    text-align: center;
+}
+
+.festival-subtitle {
+    text-align: center;
+    color: var(--neutral-600);
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Festival Info Grid */
+.festival-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Info Card */
+.info-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--neutral-200);
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-2xl);
+}
+
+.info-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--neutral-900);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.info-card-title::before {
+    content: "ℹ️";
+    font-size: 1.5rem;
+}
+
+/* Info List */
+.info-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--neutral-50);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--primary-500);
+    transition: all 0.2s ease;
+}
+
+.info-item:hover {
+    background: var(--primary-50);
+    transform: translateX(4px);
+}
+
+.info-icon {
+    width: 2rem;
+    height: 2rem;
+    background: var(--primary-100);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--neutral-700);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-xs);
+}
+
+.info-value {
+    font-size: 1rem;
+    color: var(--neutral-900);
+    font-weight: 500;
+}
+
+/* Special styling for specific info types */
+.info-item.location .info-icon {
+    background: var(--success-500);
+}
+
+.info-item.location .info-icon::before {
+    content: "📍";
+}
+
+.info-item.category .info-icon {
+    background: var(--warning-100);
+}
+
+.info-item.category .info-icon::before {
+    content: "🎪";
+}
+
+.info-item.datetime .info-icon {
+    background: var(--primary-100);
+}
+
+.info-item.datetime .info-icon::before {
+    content: "📅";
+}
+
+.info-item.price .info-icon {
+    background: var(--success-500);
+}
+
+.info-item.price .info-icon::before {
+    content: "💰";
+}
+
+.info-item.tickets .info-icon {
+    background: var(--warning-100);
+}
+
+.info-item.tickets .info-icon::before {
+    content: "🎫";
+}
+
+.info-item.registrations .info-icon {
+    background: var(--primary-100);
+}
+
+.info-item.registrations .info-icon::before {
+    content: "👥";
+}
+
+/* Tickets Status */
+.tickets-status {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-left: var(--spacing-sm);
+}
+
+.tickets-available {
+    background: var(--success-500);
+    color: var(--success-500);
+}
+
+.tickets-low {
+    background: var(--warning-100);
+    color: var(--warning-500);
+}
+
+.tickets-sold-out {
+    background: var(--error-100);
+    color: var(--error-500);
+}
+
+/* Foodtrucks Section */
+.foodtrucks-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--neutral-200);
+    margin-bottom: var(--spacing-xl);
+}
+
+.foodtrucks-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--neutral-900);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.foodtrucks-title::before {
+    content: "🚚";
+    font-size: 1.8rem;
+}
+
+.foodtrucks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.foodtruck-item {
+    background: var(--neutral-50);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--neutral-200);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.foodtruck-item:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-500);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.foodtruck-item::before {
+    content: "🍕";
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.foodtruck-name {
+    font-weight: 600;
+    color: var(--neutral-900);
+}
+
+/* Empty State */
+.empty-foodtrucks {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    color: var(--neutral-500);
+}
+
+.empty-foodtrucks::before {
+    content: "🤷‍♂️";
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    text-decoration: none;
+    letter-spacing: 0.025em;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--neutral-700);
+    border: 2px solid var(--neutral-300);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+    background: var(--neutral-50);
+    border-color: var(--neutral-400);
+    color: var(--neutral-900);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-container {
+        padding: var(--spacing-md);
+    }
+
+    .festival-header {
+        padding: var(--spacing-xl);
+    }
+
+    .festival-title {
+        font-size: 2rem;
+    }
+
+    .festival-info {
+        grid-template-columns: 1fr;
+    }
+
+    .info-card {
+        padding: var(--spacing-lg);
+    }
+
+    .foodtrucks-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 640px) {
+    .navbar {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .navbar-title {
+        font-size: 1.25rem;
+    }
+
+    .festival-title {
+        font-size: 1.75rem;
+    }
+
+    .info-item {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.festival-header {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.info-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.info-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.info-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.foodtrucks-card {
+    animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+/* Focus Styles for Accessibility */
+.btn:focus-visible,
+.back-button:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+
+/* Utility Classes */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

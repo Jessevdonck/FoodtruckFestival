@@ -1,30 +1,129 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Festival Detail</title>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${festival.name} + ' - Festival Details'">Festival Detail</title>
+    <link rel="stylesheet" th:href="@{/css/festival-details.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-<h1 th:text="${festival.name}">Festival naam</h1>
+<!-- Navigation -->
+<nav class="navbar">
+    <h1 class="navbar-title">Festival Platform</h1>
+</nav>
 
-<ul>
-    <li><strong>Locatie:</strong> <span th:text="${festival.location}">Locatie</span></li>
-    <li><strong>Categorie:</strong> <span th:text="${festival.categorie}">Categorie</span></li>
-    <li><strong>Datum & Tijd:</strong> <span th:text="${#temporals.format(festival.dateTime, 'dd-MM-yyyy HH:mm')}">Datum & Tijd</span></li>
-    <li><strong>Prijs:</strong> €<span th:text="${festival.price}">0.00</span></li>
+<!-- Main Content -->
+<div class="main-container">
+    <!-- Back Button -->
+    <a th:href="@{/festivals}" class="back-button">
+        Terug naar overzicht
+    </a>
 
-    <li><strong>Beschikbare tickets:</strong> <span th:text="${festival.availableTickets}">0</span></li>
-    <li><strong>Aantal inschrijvingen:</strong> <span th:text="${festival.registrationCount}">0</span></li>
-</ul>
+    <!-- Festival Header -->
+    <div class="festival-header">
+        <h1 class="festival-title" th:text="${festival.name}">Festival naam</h1>
+        <p class="festival-subtitle">Ontdek alle details van dit geweldige evenement</p>
+    </div>
 
-<h2>Foodtrucks</h2>
-<ul>
-    <li th:each="truck : ${festival.foodtrucks}" th:text="${truck}">Truck naam</li>
-</ul>
+    <!-- Festival Info Grid -->
+    <div class="festival-info">
+        <!-- Main Info Card -->
+        <div class="info-card">
+            <h2 class="info-card-title">Festival Informatie</h2>
+            <ul class="info-list">
+                <li class="info-item location">
+                    <div class="info-icon"></div>
+                    <div class="info-content">
+                        <div class="info-label">Locatie</div>
+                        <div class="info-value" th:text="${festival.location}">Locatie</div>
+                    </div>
+                </li>
+                <li class="info-item category">
+                    <div class="info-icon"></div>
+                    <div class="info-content">
+                        <div class="info-label">Categorie</div>
+                        <div class="info-value" th:text="${festival.categorie}">Categorie</div>
+                    </div>
+                </li>
+                <li class="info-item datetime">
+                    <div class="info-icon"></div>
+                    <div class="info-content">
+                        <div class="info-label">Datum & Tijd</div>
+                        <div class="info-value" th:text="${#temporals.format(festival.dateTime, 'dd-MM-yyyy HH:mm')}">Datum & Tijd</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-<p>
-    <a th:href="@{/festivals}">Terug naar festivaloverzicht</a>
-</p>
+        <!-- Tickets & Pricing Card -->
+        <div class="info-card">
+            <h2 class="info-card-title">Tickets & Prijzen</h2>
+            <ul class="info-list">
+                <li class="info-item price">
+                    <div class="info-icon"></div>
+                    <div class="info-content">
+                        <div class="info-label">Prijs per ticket</div>
+                        <div class="info-value">
+                            €<span th:text="${festival.price}">0.00</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="info-item tickets">
+                    <div class="info-icon"></div>
+                    <div class="info-content">
+                        <div class="info-label">Beschikbare tickets</div>
+                        <div class="info-value">
+                            <span th:text="${festival.availableTickets}">0</span>
+                            <span class="tickets-status"
+                                  th:classappend="${festival.availableTickets > 50} ? 'tickets-available' : (${festival.availableTickets > 10} ? 'tickets-low' : 'tickets-sold-out')"
+                                  th:text="${festival.availableTickets > 50} ? 'Ruim beschikbaar' : (${festival.availableTickets > 10} ? 'Beperkt beschikbaar' : 'Bijna uitverkocht')">
+                                    Status
+                                </span>
+                        </div>
+                    </div>
+                </li>
+                <li class="info-item registrations">
+                    <div class="info-icon"></div>
+                    <div class="info-content">
+                        <div class="info-label">Aantal inschrijvingen</div>
+                        <div class="info-value" th:text="${festival.registrationCount}">0</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Foodtrucks Section -->
+    <div class="foodtrucks-card">
+        <h2 class="foodtrucks-title">Foodtrucks</h2>
+
+        <div th:if="${festival.foodtrucks != null}" class="foodtrucks-grid">
+            <div th:each="truck : ${festival.foodtrucks}" class="foodtruck-item">
+                <span class="foodtruck-name" th:text="${truck}">Truck naam</span>
+            </div>
+        </div>
+
+        <div th:if="${festival.foodtrucks == null}" class="empty-foodtrucks">
+            <p><strong>Geen foodtrucks beschikbaar</strong></p>
+            <p>Er zijn momenteel geen foodtrucks aangekondigd voor dit festival.</p>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="btn btn-primary" onclick="alert('Ticket boeken functionaliteit komt binnenkort!')">
+            🎫 Tickets Boeken
+        </button>
+        <button class="btn btn-secondary" onclick="alert('Delen functionaliteit komt binnenkort!')">
+            📤 Delen
+        </button>
+        <a th:href="@{/festivals}" class="btn btn-secondary">
+            📋 Alle Festivals
+        </a>
+    </div>
+</div>
 </body>
 </html>
