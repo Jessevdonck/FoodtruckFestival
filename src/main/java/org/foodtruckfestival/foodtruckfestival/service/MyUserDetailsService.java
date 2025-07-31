@@ -3,7 +3,7 @@ package org.foodtruckfestival.foodtruckfestival.service;
 
 import lombok.NoArgsConstructor;
 import org.foodtruckfestival.foodtruckfestival.domain.MyUser;
-import org.foodtruckfestival.foodtruckfestival.domain.Role;
+import org.foodtruckfestival.foodtruckfestival.enums.Role;
 import org.foodtruckfestival.foodtruckfestival.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

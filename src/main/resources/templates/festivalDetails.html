@@ -78,9 +78,7 @@
                         <div class="info-value">
                             <span th:text="${festival.availableTickets}">0</span>
                             <span class="tickets-status"
-                                  th:classappend="${festival.availableTickets > 50} ? 'tickets-available' : (${festival.availableTickets > 10} ? 'tickets-low' : 'tickets-sold-out')"
-                                  th:text="${festival.availableTickets > 50} ? 'Ruim beschikbaar' : (${festival.availableTickets > 10} ? 'Beperkt beschikbaar' : 'Bijna uitverkocht')">
-                                    Status
+                                  th:classappend="${festival.availableTickets > 50} ? 'tickets-available' : (${festival.availableTickets > 10} ? 'tickets-low' : 'tickets-sold-out')"                                   Status
                                 </span>
                         </div>
                     </div>

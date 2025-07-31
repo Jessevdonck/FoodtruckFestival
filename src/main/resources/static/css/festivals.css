@@ -350,3 +350,84 @@ body {
     white-space: nowrap;
     border: 0;
 }
+
+/* Add Festival Button Styles */
+.add-festival-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: var(--spacing-xl);
+    padding: 0 var(--spacing-md);
+}
+
+.btn-add-festival {
+    background: linear-gradient(135deg, var(--success-500) 0%, var(--success-600) 100%);
+    color: white;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    font-family: inherit;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-add-festival::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-add-festival:hover {
+    background: linear-gradient(135deg, var(--success-600) 0%, var(--success-600) 100%);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px) scale(1.05);
+}
+
+.btn-add-festival:hover::before {
+    left: 100%;
+}
+
+.btn-add-festival:active {
+    transform: translateY(0) scale(1);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-add-festival:focus-visible {
+    outline: 2px solid var(--success-500);
+    outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .add-festival-button {
+        justify-content: center;
+        margin-bottom: var(--spacing-lg);
+        padding: 0;
+    }
+
+    .btn-add-festival {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .btn-add-festival {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}

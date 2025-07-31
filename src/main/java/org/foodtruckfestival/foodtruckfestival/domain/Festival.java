@@ -2,7 +2,11 @@ package org.foodtruckfestival.foodtruckfestival.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.foodtruckfestival.foodtruckfestival.enums.Food;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,10 +26,13 @@ public class Festival
     private Long id;
 
     @NotBlank
+    @NotNull
     private String name;
 
     @ElementCollection
-    private List<String> foodtrucks; // max 4, validatie nodig
+    @NotEmpty
+    @Size(max = 4)
+    private List<@NotBlank String> foodtrucks; // max 4, validatie nodig
 
     @NotBlank
     private String location;

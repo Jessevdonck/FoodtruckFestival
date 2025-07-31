@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+
+<div th:replace="~{/navbar}"></div>
 <!-- Main Content -->
 <div class="main-container">
     <!-- Page Header -->
@@ -72,7 +74,7 @@
         </div>
 
         <!-- Empty State -->
-        <div th:if="${festivals == null}" class="empty-state">
+        <div th:if="${festivals.isEmpty()}" class="empty-state">
             <div class="empty-state-icon">🎪</div>
             <h2 class="empty-state-title">Geen festivals gevonden</h2>
             <p class="empty-state-message">Er zijn momenteel geen festivals beschikbaar. Kom later terug voor nieuwe evenementen!</p>

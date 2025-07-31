@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div th:fragment="navbar">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <!-- Brand/Logo Section -->
+            <div class="navbar-brand">
+                <a href="/" class="brand-link">
+                    <span class="brand-icon">🎪</span>
+                    <span class="brand-text">FestivalHub</span>
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="navbar-nav">
+                <a href="/" class="nav-link">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="/festivals" class="nav-link">
+                    <span class="nav-icon">🎵</span>
+                    <span class="nav-text">Festivals</span>
+                </a>
+                <a href="/events" class="nav-link">
+                    <span class="nav-icon">📅</span>
+                    <span class="nav-text">Events</span>
+                </a>
+            </div>
+
+            <!-- User Section -->
+            <div class="navbar-user">
+                <div class="user-info">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <img th:if="${userRole}"
+                                 th:src="@{'/icons/' + ${userRole} + '.png'}"
+                                 th:alt="${userRole} + ' icon'"
+                                 class="user-icon"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <span class="user-fallback" th:text="${username != null ? username.substring(0,1).toUpperCase() : 'U'}">U</span>
+                        </div>
+                        <div class="user-details">
+                            <span class="user-name" th:text="${username}">Gebruiker</span>
+                            <span class="user-role" th:text="${userRole}">Role</span>
+                        </div>
+                    </div>
+
+                    <div class="user-actions">
+                        <button class="user-menu-btn" onclick="toggleUserMenu()">
+                            <span class="menu-dots">⋮</span>
+                        </button>
+
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="/profile" class="dropdown-item">
+                                <span class="dropdown-icon">👤</span>
+                                Profiel
+                            </a>
+                            <a href="/settings" class="dropdown-item">
+                                <span class="dropdown-icon">⚙️</span>
+                                Instellingen
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <form method="post" th:action="@{/logout}" class="logout-form">
+                                <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+                                <button type="submit" class="dropdown-item logout-btn">
+                                    <span class="dropdown-icon">🚪</span>
+                                    Uitloggen
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <a href="/" class="mobile-nav-link">
+                <span class="nav-icon">🏠</span>
+                Home
+            </a>
+            <a href="/festivals" class="mobile-nav-link">
+                <span class="nav-icon">🎵</span>
+                Festivals
+            </a>
+            <a href="/events" class="mobile-nav-link">
+                <span class="nav-icon">📅</span>
+                Events
+            </a>
+            <div class="mobile-divider"></div>
+            <a href="/profile" class="mobile-nav-link">
+                <span class="nav-icon">👤</span>
+                Profiel
+            </a>
+            <a href="/settings" class="mobile-nav-link">
+                <span class="nav-icon">⚙️</span>
+                Instellingen
+            </a>
+            <form method="post" th:action="@{/logout}" class="mobile-logout-form">
+                <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+                <button type="submit" class="mobile-nav-link logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    Uitloggen
+                </button>
+            </form>
+        </div>
+    </nav>
+</div>
+
+<!-- JavaScript Fragment -->
+<script th:fragment="navbar-script">
+    function toggleUserMenu() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.classList.toggle('show');
+    }
+
+    function toggleMobileMenu() {
+        const mobileNav = document.getElementById('mobileNav');
+        const button = document.querySelector('.mobile-menu-btn');
+        mobileNav.classList.toggle('show');
+        button.classList.toggle('active');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const userActions = document.querySelector('.user-actions');
+        const dropdown = document.getElementById('userDropdown');
+
+        if (userActions && !userActions.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('mobileNav').classList.remove('show');
+            document.querySelector('.mobile-menu-btn').classList.remove('active');
+        });
+    });
+</script>
+
+</body>
+</html>

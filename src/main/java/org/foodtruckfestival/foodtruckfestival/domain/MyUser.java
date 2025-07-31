@@ -2,6 +2,7 @@ package org.foodtruckfestival.foodtruckfestival.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.foodtruckfestival.foodtruckfestival.enums.Role;
 
 import java.io.Serializable;
 import java.util.ArrayList;

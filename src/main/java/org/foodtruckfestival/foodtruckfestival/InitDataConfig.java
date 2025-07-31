@@ -1,6 +1,8 @@
 package org.foodtruckfestival.foodtruckfestival;
 
 import org.foodtruckfestival.foodtruckfestival.domain.*;
+import org.foodtruckfestival.foodtruckfestival.enums.Food;
+import org.foodtruckfestival.foodtruckfestival.enums.Role;
 import org.foodtruckfestival.foodtruckfestival.repository.FestivalRepository;
 import org.foodtruckfestival.foodtruckfestival.repository.MyUserRepository;
 import org.foodtruckfestival.foodtruckfestival.repository.RegistrationRepository;

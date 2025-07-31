@@ -1,6 +1,6 @@
 package org.foodtruckfestival.foodtruckfestival.controller;
 
-import org.foodtruckfestival.foodtruckfestival.domain.Role;
+import org.foodtruckfestival.foodtruckfestival.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
