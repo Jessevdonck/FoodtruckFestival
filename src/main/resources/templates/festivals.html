@@ -12,12 +12,19 @@
 <body>
 
 <div th:replace="~{/navbar}"></div>
+
 <!-- Main Content -->
 <div class="main-container">
     <!-- Page Header -->
     <div class="page-header">
         <h1 class="page-title">Festival Overzicht</h1>
         <p class="page-subtitle">Ontdek de beste festivals en evenementen</p>
+    </div>
+
+    <div th:if="${userRole == 'admin'}" class="add-festival-button">
+        <button class="btn-add-festival" title="Festival toevoegen">
+            +
+        </button>
     </div>
 
     <!-- Festivals Card -->
