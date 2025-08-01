@@ -22,7 +22,7 @@
     </div>
 
     <div th:if="${userRole == 'admin'}" class="add-festival-button">
-        <button class="btn-add-festival" title="Festival toevoegen">
+        <button class="btn-add-festival" title="Festival toevoegen" onclick="window.location.href='/festivals/add'">
             +
         </button>
     </div>
@@ -64,7 +64,7 @@
                     <td data-label="Prijs">
                                 <span th:if="${festival.price != null}"
                                       class="festival-price"
-                                      th:text="${festival.price + ' €'}">€50</span>
+                                      th:text="${' €' + festival.price}">€ -</span>
                         <span th:unless="${festival.price != null}"
                               class="price-unavailable">Niet beschikbaar</span>
                     </td>
@@ -79,6 +79,8 @@
                 </tbody>
             </table>
         </div>
+
+
 
         <!-- Empty State -->
         <div th:if="${festivals.isEmpty()}" class="empty-state">

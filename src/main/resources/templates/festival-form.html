@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festival Toevoegen of Wijzigen</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+    <link rel="stylesheet" th:href="@{/css/festival-form.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Include Navbar -->
+<div th:replace="~{navbar}"></div>
+
+<div class="main-container">
+    <div class="form-header">
+        <h1 class="form-title" th:text="${festival.id == null} ? 'Festival toevoegen' : 'Festival wijzigen'">Festival toevoegen</h1>
+        <p class="form-subtitle">Vul alle verplichte velden in om het festival op te slaan</p>
+    </div>
+
+    <div class="form-card">
+        <form th:action="@{/festivals/add}" th:object="${festival}" method="post" class="festival-form" novalidate>
+
+            <div th:if="${globalError}" class="error-message">
+                <span class="error-icon">⚠️</span>
+                <span th:text="${globalError}"></span>
+            </div>
+            <!-- Basis Informatie Sectie -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">📝</span>
+                    Basis Informatie
+                </h2>
+
+                <!-- Naam -->
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        Festivalnaam
+                        <span class="required">*</span>
+                    </label>
+                    <input id="name" type="text" th:field="*{name}" class="form-input" placeholder="Bijv. Summer Music Festival" />
+                    <div th:if="${#fields.hasErrors('name')}" class="error-message">
+                        <span class="error-icon">⚠️</span>
+                        <span th:errors="*{name}"></span>
+                    </div>
+                </div>
+
+                <!-- Locatie -->
+                <div class="form-group">
+                    <label for="location" class="form-label">
+                        Locatie
+                        <span class="required">*</span>
+                    </label>
+                    <select id="location" th:field="*{location}" class="form-select">
+                        <option value="" disabled selected>Kies een locatie</option>
+                        <option th:each="loc : ${locaties}" th:value="${loc}" th:text="${loc}">Gent</option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('location')}" class="error-message">
+                        <span class="error-icon">⚠️</span>
+                        <span th:errors="*{location}"></span>
+                    </div>
+                </div>
+
+                <!-- Categorie -->
+                <div class="form-group">
+                    <label for="categorie" class="form-label">
+                        Categorie
+                        <span class="required">*</span>
+                    </label>
+                    <select id="categorie" th:field="*{categorie}" class="form-select">
+                        <option value="" disabled selected>Kies een categorie</option>
+                        <option th:each="cat : ${categorieen}" th:value="${cat}" th:text="${cat}">BBQ</option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('categorie')}" class="error-message">
+                        <span class="error-icon">⚠️</span>
+                        <span th:errors="*{categorie}"></span>
+                    </div>
+                </div>
+
+                <!-- Datum en tijd -->
+                <div class="form-group">
+                    <label for="dateTime" class="form-label">
+                        Datum en Tijd
+                        <span class="required">*</span>
+                    </label>
+                    <input id="dateTime" type="datetime-local" th:field="*{dateTime}" class="form-input" />
+                    <div th:if="${#fields.hasErrors('dateTime')}" class="error-message">
+                        <span class="error-icon">⚠️</span>
+                        <span th:errors="*{dateTime}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Foodtrucks Sectie -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">🚚</span>
+                    Foodtrucks
+                </h2>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Standhouders (max. 4)
+                        <span class="required">*</span>
+                    </label>
+                    <div class="foodtrucks-container" id="foodtrucksContainer">
+                        <!-- Eerste foodtruck veld (altijd zichtbaar) -->
+                        <div class="foodtruck-item">
+                            <div class="foodtruck-input-group">
+                                <input type="text" th:field="*{foodtrucks[0]}" class="form-input foodtruck-input" placeholder="Naam van de foodtruck" />
+                                <div th:if="${#fields.hasErrors('foodtrucks[0]')}" class="error-message">
+                                    <span class="error-icon">⚠️</span>
+                                    <span th:errors="*{foodtrucks[0]}"></span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-remove-foodtruck" onclick="removeFoodtruck(0)" style="display: none;">
+                                <span class="btn-icon">―</span>
+                            </button>
+                        </div>
+
+                        <!-- Extra foodtruck velden (verborgen) -->
+                        <div th:each="i : ${#numbers.sequence(1,3)}" class="foodtruck-item" style="display: none;">
+                            <div class="foodtruck-input-group">
+                                <input type="text" th:field="*{foodtrucks[__${i}__]}" class="form-input foodtruck-input" placeholder="Naam van de foodtruck" />
+                                <div th:if="${#fields.hasErrors('foodtrucks[__${i}__]')}" class="error-message">
+                                    <span class="error-icon">⚠️</span>
+                                    <span th:errors="*{foodtrucks[__${i}__]}"></span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-remove-foodtruck" th:onclick="'removeFoodtruck(' + ${i} + ')'">
+                                <span class="btn-icon">―</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-add-foodtruck" id="addFoodtruckBtn" onclick="addFoodtruck()">
+                        <span class="btn-icon">+</span>
+                        <span class="btn-text">Foodtruck toevoegen</span>
+                    </button>
+
+                    <!-- Algemene foodtrucks error (voor array-level validatie) -->
+                    <div th:if="${#fields.hasErrors('foodtrucks')}" class="error-message">
+                        <span class="error-icon">⚠️</span>
+                        <span th:errors="*{foodtrucks}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tickets & Prijzen Sectie -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">🎫</span>
+                    Tickets & Prijzen
+                </h2>
+
+                <div class="form-row">
+                    <!-- Max Tickets -->
+                    <div class="form-group">
+                        <label for="maxTickets" class="form-label">
+                            Beschikbare tickets
+                            <span class="required">*</span>
+                        </label>
+                        <input id="maxTickets" type="number" th:field="*{maxTickets}" min="50" max="250" class="form-input" placeholder="50 - 250" />
+                        <div class="form-hint">Tussen 50 en 250 tickets</div>
+                        <div th:if="${#fields.hasErrors('maxTickets')}" class="error-message">
+                            <span class="error-icon">⚠️</span>
+                            <span th:errors="*{maxTickets}"></span>
+                        </div>
+                    </div>
+
+                    <!-- Prijs -->
+                    <div class="form-group">
+                        <label for="price" class="form-label">
+                            Ticketprijs (€)
+                            <span class="required">*</span>
+                        </label>
+                        <div class="input-with-prefix">
+                            <span class="input-prefix">€</span>
+                            <input id="price" type="number" th:field="*{price}" step="0.01" min="0" class="form-input" placeholder="0.00" />
+                        </div>
+                        <div th:if="${#fields.hasErrors('price')}" class="error-message">
+                            <span class="error-icon">⚠️</span>
+                            <span th:errors="*{price}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optionele Codes Sectie -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">🔢</span>
+                    Optionele Codes
+                </h2>
+
+                <div class="form-row">
+                    <!-- Festivalcode1 -->
+                    <div class="form-group">
+                        <label for="festivalCode1" class="form-label">Festivalcode 1</label>
+                        <input id="festivalCode1" type="number" th:field="*{festivalCode1}" class="form-input" placeholder="Optioneel" />
+                        <div th:if="${#fields.hasErrors('festivalCode1')}" class="error-message">
+                            <span class="error-icon">⚠️</span>
+                            <span th:errors="*{festivalCode1}"></span>
+                        </div>
+                    </div>
+
+                    <!-- Festivalcode2 -->
+                    <div class="form-group">
+                        <label for="festivalCode2" class="form-label">Festivalcode 2</label>
+                        <input id="festivalCode2" type="number" th:field="*{festivalCode2}" class="form-input" placeholder="Optioneel" />
+                        <div th:if="${#fields.hasErrors('festivalCode2')}" class="error-message">
+                            <span class="error-icon">⚠️</span>
+                            <span th:errors="*{festivalCode2}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <span class="btn-icon">💾</span>
+                    <span class="btn-text">Festival Opslaan</span>
+                </button>
+                <a href="/festivals" class="btn-cancel">
+                    <span class="btn-icon">❌</span>
+                    <span class="btn-text">Annuleren</span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    let foodtruckCount = 1;
+    const maxFoodtrucks = 4;
+
+    function addFoodtruck() {
+        if (foodtruckCount >= maxFoodtrucks) return;
+
+        const container = document.getElementById('foodtrucksContainer');
+        const foodtruckItems = container.querySelectorAll('.foodtruck-item');
+
+        // Toon het volgende verborgen veld
+        if (foodtruckItems[foodtruckCount]) {
+            foodtruckItems[foodtruckCount].style.display = 'flex';
+
+            // Verberg error message voor nieuw toegevoegd veld (tenzij het veld al een waarde heeft)
+            const input = foodtruckItems[foodtruckCount].querySelector('.foodtruck-input');
+            const errorMessage = foodtruckItems[foodtruckCount].querySelector('.error-message');
+
+            if (errorMessage && (!input.value || input.value.trim() === '')) {
+                errorMessage.style.display = 'none';
+            }
+
+            foodtruckCount++;
+
+            // Update remove buttons visibility
+            updateRemoveButtons();
+
+            // Verberg add button als we max bereikt hebben
+            if (foodtruckCount >= maxFoodtrucks) {
+                document.getElementById('addFoodtruckBtn').style.display = 'none';
+            }
+        }
+    }
+
+    function removeFoodtruck(index) {
+        if (foodtruckCount <= 1) return;
+
+        const container = document.getElementById('foodtrucksContainer');
+        const foodtruckItems = container.querySelectorAll('.foodtruck-item');
+
+        // Verberg het laatste zichtbare veld en clear de waarde
+        const lastVisibleIndex = foodtruckCount - 1;
+        if (foodtruckItems[lastVisibleIndex]) {
+            foodtruckItems[lastVisibleIndex].style.display = 'none';
+            const input = foodtruckItems[lastVisibleIndex].querySelector('input');
+            if (input) input.value = '';
+
+            // Verberg ook de error message
+            const errorMessage = foodtruckItems[lastVisibleIndex].querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+
+            foodtruckCount--;
+
+            // Update remove buttons visibility
+            updateRemoveButtons();
+
+            // Toon add button weer
+            document.getElementById('addFoodtruckBtn').style.display = 'flex';
+        }
+    }
+
+    function updateRemoveButtons() {
+        const container = document.getElementById('foodtrucksContainer');
+        const removeButtons = container.querySelectorAll('.btn-remove-foodtruck');
+
+        // Toon remove buttons alleen als er meer dan 1 foodtruck is
+        removeButtons.forEach((btn, index) => {
+            if (index === 0) {
+                // Eerste remove button alleen tonen als er meer dan 1 foodtruck is
+                btn.style.display = foodtruckCount > 1 ? 'flex' : 'none';
+            } else {
+                // Andere remove buttons tonen als het veld zichtbaar is
+                const foodtruckItem = btn.closest('.foodtruck-item');
+                btn.style.display = foodtruckItem.style.display !== 'none' ? 'flex' : 'none';
+            }
+        });
+    }
+
+    // Functie om error messages te tonen/verbergen op basis van input waarde
+    function handleInputChange(input) {
+        const errorMessage = input.closest('.foodtruck-input-group').querySelector('.error-message');
+        if (errorMessage) {
+            // Toon error alleen als het veld leeg is EN er daadwerkelijk een error is
+            if (input.value && input.value.trim() !== '') {
+                errorMessage.style.display = 'none';
+            } else {
+                // Laat de error zien als het veld leeg wordt gemaakt
+                errorMessage.style.display = 'flex';
+            }
+        }
+    }
+
+    // Initialize op page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('foodtrucksContainer');
+        const inputs = container.querySelectorAll('.foodtruck-input');
+
+        // Tel hoeveel foodtruck velden al gevuld zijn
+        foodtruckCount = 0;
+        inputs.forEach((input, index) => {
+            if (input.value && input.value.trim() !== '') {
+                foodtruckCount = Math.max(foodtruckCount, index + 1);
+            }
+        });
+
+        // Zorg ervoor dat er minimaal 1 veld zichtbaar is
+        if (foodtruckCount === 0) {
+            foodtruckCount = 1;
+        }
+
+        // Toon de juiste velden en verberg error messages voor lege verborgen velden
+        inputs.forEach((input, index) => {
+            const foodtruckItem = input.closest('.foodtruck-item');
+            const errorMessage = input.closest('.foodtruck-input-group').querySelector('.error-message');
+
+            if (index < foodtruckCount) {
+                foodtruckItem.style.display = 'flex';
+                // Voor zichtbare velden: verberg error als veld gevuld is
+                if (errorMessage && input.value && input.value.trim() !== '') {
+                    errorMessage.style.display = 'none';
+                }
+            } else {
+                foodtruckItem.style.display = 'none';
+                // Voor verborgen velden: verberg altijd de error message
+                if (errorMessage) {
+                    errorMessage.style.display = 'none';
+                }
+            }
+
+            // Voeg event listener toe voor real-time error handling
+            input.addEventListener('input', function() {
+                handleInputChange(this);
+            });
+        });
+
+        updateRemoveButtons();
+
+        // Verberg add button als max bereikt
+        if (foodtruckCount >= maxFoodtrucks) {
+            document.getElementById('addFoodtruckBtn').style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

@@ -11,9 +11,7 @@
 </head>
 <body>
 <!-- Navigation -->
-<nav class="navbar">
-    <h1 class="navbar-title">Festival Platform</h1>
-</nav>
+<div th:replace="~{/navbar}"></div>
 
 <!-- Main Content -->
 <div class="main-container">
@@ -78,7 +76,7 @@
                         <div class="info-value">
                             <span th:text="${festival.availableTickets}">0</span>
                             <span class="tickets-status"
-                                  th:classappend="${festival.availableTickets > 50} ? 'tickets-available' : (${festival.availableTickets > 10} ? 'tickets-low' : 'tickets-sold-out')"                                   Status
+                                  th:classappend="${festival.availableTickets > 50} ? 'tickets-available' : (${festival.availableTickets > 10} ? 'tickets-low' : 'tickets-sold-out')">
                                 </span>
                         </div>
                     </div>
