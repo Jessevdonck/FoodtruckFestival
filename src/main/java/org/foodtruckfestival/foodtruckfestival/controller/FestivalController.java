@@ -52,6 +52,16 @@ return "festivalDetails";
         return "festival-form";
     }
 
+    @GetMapping("/edit/{id}")
+    public String showEditFestivalForm(@PathVariable Long id, Model model) {
+        Festival festival = festivalService.findById(id);
+        model.addAttribute("festival", festival);
+        model.addAttribute("locaties", Location.values());
+        model.addAttribute("categorieen", Food.values());
+        System.out.println(festival.getDateTime());
+        return "festival-form";
+    }
+
     @PostMapping("/add")
     public String processFestivalForm(
             @Valid @ModelAttribute("festival") Festival festival,
@@ -74,4 +84,15 @@ return "festivalDetails";
         return "redirect:/festivals";
     }
 
+        @PostMapping("/edit/{id}")
+        public String updateFestival(@PathVariable Long id, @Valid Festival festival, BindingResult result, Model model) {
+            if (result.hasErrors()) {
+                model.addAttribute("locaties", Location.values());
+                model.addAttribute("categorieen", Food.values());
+                return "festival-form";
+            }
+
+            festivalService.updateFestival(id, festival);
+            return "redirect:/festivals";
+        }
 }

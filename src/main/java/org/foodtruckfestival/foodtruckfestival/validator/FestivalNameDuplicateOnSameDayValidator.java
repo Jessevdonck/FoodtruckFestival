@@ -34,12 +34,14 @@ public class FestivalNameDuplicateOnSameDayValidator implements Validator {
         List<Festival> existingFestivals = festivalRepository.findByName(festival.getName());
 
         for (Festival existingFestival : existingFestivals) {
-            if (existingFestival.getId().equals(festival.getId())) {
-                continue; // Skip self
+            // Important Fix: Skip self during edit
+            if (festival.getId() != null && festival.getId().equals(existingFestival.getId())) {
+                continue; // Skip comparing with self
             }
 
             if (existingFestival.getDateTime().toLocalDate().isEqual(targetDate)) {
-                errors.rejectValue("name", "festival.name.duplicateOnDate", "Er bestaat al een festival met deze naam op deze dag.");
+                errors.rejectValue("name", "festival.name.duplicateOnDate",
+                        "Er bestaat al een festival met deze naam op deze dag.");
                 break;
             }
         }

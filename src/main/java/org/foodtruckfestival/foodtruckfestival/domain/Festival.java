@@ -36,7 +36,7 @@ public class Festival
     @NotEmpty
     @NoDuplicateFoodtrucks
     @Size(max = 4)
-    private List<@NotBlank(message = "Foodtruck veld mag niet leeg zijn") String> foodtrucks;
+    private List<String> foodtrucks;
 
     @NotBlank
     private String location;

@@ -170,7 +170,14 @@ body {
     font-style: italic;
 }
 
-/* Action Button */
+/* Action Buttons Container */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Details Button */
 .btn-details {
     background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
     color: white;
@@ -199,6 +206,57 @@ body {
     font-size: 0.875rem;
 }
 
+/* Improved Edit Button Styling */
+.btn-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--neutral-100);
+    color: var(--neutral-600);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    border: 1px solid var(--neutral-200);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-edit::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.3s ease;
+}
+
+.btn-edit:hover {
+    background: var(--primary-500);
+    color: white;
+    border-color: var(--primary-500);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px) scale(1.05);
+}
+
+.btn-edit:hover::before {
+    left: 100%;
+}
+
+.btn-edit:active {
+    transform: translateY(0) scale(1);
+    box-shadow: none;
+}
+
+.btn-edit:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+
 /* Empty State */
 .empty-state {
     text-align: center;
@@ -220,135 +278,6 @@ body {
 
 .empty-state-message {
     font-size: 0.875rem;
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .festivals-table {
-        font-size: 0.8rem;
-    }
-
-    .festivals-table th,
-    .festivals-table td {
-        padding: var(--spacing-md) var(--spacing-sm);
-    }
-}
-
-@media (max-width: 768px) {
-    .main-container {
-        padding: var(--spacing-md);
-    }
-
-    .page-title {
-        font-size: 2rem;
-    }
-
-    .page-subtitle {
-        font-size: 1rem;
-    }
-
-    /* Stack table on mobile */
-    .festivals-table,
-    .festivals-table thead,
-    .festivals-table tbody,
-    .festivals-table th,
-    .festivals-table td,
-    .festivals-table tr {
-        display: block;
-    }
-
-    .festivals-table thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    .festivals-table tr {
-        background: white;
-        border: 1px solid var(--neutral-200);
-        border-radius: var(--radius-md);
-        margin-bottom: var(--spacing-md);
-        padding: var(--spacing-md);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .festivals-table tr:hover {
-        transform: none;
-        box-shadow: var(--shadow-md);
-    }
-
-    .festivals-table td {
-        border: none;
-        border-bottom: 1px solid var(--neutral-200);
-        position: relative;
-        padding: var(--spacing-sm) 0;
-        padding-left: 40%;
-        text-align: right;
-    }
-
-    .festivals-table td:last-child {
-        border-bottom: none;
-        text-align: center;
-        padding-left: 0;
-        padding-top: var(--spacing-md);
-    }
-
-    .festivals-table td:before {
-        content: attr(data-label) ": ";
-        position: absolute;
-        left: 0;
-        width: 35%;
-        padding-right: var(--spacing-sm);
-        white-space: nowrap;
-        font-weight: 600;
-        color: var(--neutral-700);
-        text-align: left;
-    }
-}
-
-@media (max-width: 640px) {
-    .navbar {
-        padding: var(--spacing-md) var(--spacing-lg);
-    }
-
-    .navbar-title {
-        font-size: 1.25rem;
-    }
-}
-
-/* Loading Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.festivals-card {
-    animation: fadeIn 0.5s ease-out;
-}
-
-/* Focus Styles for Accessibility */
-.btn-details:focus-visible {
-    outline: 2px solid var(--primary-500);
-    outline-offset: 2px;
-}
-
-/* Utility Classes */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
 }
 
 /* Add Festival Button Styles */
@@ -409,8 +338,37 @@ body {
     outline-offset: 2px;
 }
 
-/* Responsive adjustments */
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .festivals-table {
+        font-size: 0.8rem;
+    }
+
+    .festivals-table th,
+    .festivals-table td {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+
+    .btn-edit {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+}
+
 @media (max-width: 768px) {
+    .main-container {
+        padding: var(--spacing-md);
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .page-subtitle {
+        font-size: 1rem;
+    }
+
     .add-festival-button {
         justify-content: center;
         margin-bottom: var(--spacing-lg);
@@ -422,6 +380,76 @@ body {
         height: 44px;
         font-size: 1.1rem;
     }
+
+    /* Stack table on mobile */
+    .festivals-table,
+    .festivals-table thead,
+    .festivals-table tbody,
+    .festivals-table th,
+    .festivals-table td,
+    .festivals-table tr {
+        display: block;
+    }
+
+    .festivals-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .festivals-table tr {
+        background: white;
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--spacing-md);
+        padding: var(--spacing-md);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .festivals-table tr:hover {
+        transform: none;
+        box-shadow: var(--shadow-md);
+    }
+
+    .festivals-table td {
+        border: none;
+        border-bottom: 1px solid var(--neutral-200);
+        position: relative;
+        padding: var(--spacing-sm) 0;
+        padding-left: 40%;
+        text-align: right;
+    }
+
+    .festivals-table td:last-child {
+        border-bottom: none;
+        text-align: center;
+        padding-left: 0;
+        padding-top: var(--spacing-md);
+    }
+
+    .festivals-table td:before {
+        content: attr(data-label) ": ";
+        position: absolute;
+        left: 0;
+        width: 35%;
+        padding-right: var(--spacing-sm);
+        white-space: nowrap;
+        font-weight: 600;
+        color: var(--neutral-700);
+        text-align: left;
+    }
+
+    /* Mobile action buttons */
+    .action-buttons {
+        justify-content: center;
+        gap: var(--spacing-md);
+    }
+
+    .btn-edit {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
 }
 
 @media (max-width: 640px) {
@@ -430,4 +458,45 @@ body {
         height: 40px;
         font-size: 1rem;
     }
+
+    .btn-edit {
+        width: 32px;
+        height: 32px;
+        font-size: 0.875rem;
+    }
+}
+
+/* Loading Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.festivals-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Focus Styles for Accessibility */
+.btn-details:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+
+/* Utility Classes */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }

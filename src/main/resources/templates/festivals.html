@@ -58,30 +58,37 @@
                         <span class="festival-datetime" th:text="${festival.dateTime}">Datum</span>
                     </td>
                     <td data-label="Tickets">
-                                <span class="tickets-available"
-                                      th:classappend="${festival.availableTickets < 20} ? 'tickets-low' : (${festival.availableTickets == 0} ? 'tickets-sold-out' : '')"
-                                      th:text="${festival.availableTickets}">100</span>
+                        <span class="tickets-available"
+                              th:classappend="${festival.availableTickets < 20} ? 'tickets-low' : (${festival.availableTickets == 0} ? 'tickets-sold-out' : '')"
+                              th:text="${festival.availableTickets}">100</span>
                     </td>
                     <td data-label="Prijs">
-                                <span th:if="${festival.price != null}"
-                                      class="festival-price"
-                                      th:text="${' €' + festival.price}">€ -</span>
+                        <span th:if="${festival.price != null}"
+                              class="festival-price"
+                              th:text="${' €' + festival.price}">€ -</span>
                         <span th:unless="${festival.price != null}"
                               class="price-unavailable">Niet beschikbaar</span>
                     </td>
                     <td data-label="Details">
-                        <a th:href="@{/festivals/{id}(id=${festival.id})}"
-                           class="btn-details"
-                           th:attr="aria-label='Bekijk details van ' + ${festival.name}">
-                            Details
-                        </a>
+                        <div class="action-buttons">
+                            <a th:href="@{/festivals/{id}(id=${festival.id})}"
+                               class="btn-details"
+                               th:attr="aria-label='Bekijk details van ' + ${festival.name}">
+                                Details
+                            </a>
+                            <a th:if="${userRole == 'admin'}"
+                               th:href="@{/festivals/edit/{id}(id=${festival.id})}"
+                               class="btn-edit"
+                               th:attr="aria-label='Bewerk ' + ${festival.name}"
+                               title="Festival bewerken">
+                                ✏️
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
-
 
         <!-- Empty State -->
         <div th:if="${festivals.isEmpty()}" class="empty-state">
@@ -91,5 +98,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>
