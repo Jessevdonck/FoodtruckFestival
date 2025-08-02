@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
 import org.foodtruckfestival.foodtruckfestival.enums.Food;
 import org.foodtruckfestival.foodtruckfestival.enums.Location;
+import org.foodtruckfestival.foodtruckfestival.validator.FestivalCategoryConflictOnSameDayValidator;
+import org.foodtruckfestival.foodtruckfestival.validator.FestivalNameDuplicateOnSameDayValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,12 @@ import org.foodtruckfestival.foodtruckfestival.service.FestivalService;
 public class FestivalController {
 
 private final FestivalService festivalService;
+
+@Autowired
+FestivalCategoryConflictOnSameDayValidator categoryConflictOnSameDayValidator;
+
+@Autowired
+FestivalNameDuplicateOnSameDayValidator nameDuplicateOnSameDayValidator;
 
 @Autowired
 public FestivalController(FestivalService festivalService) {
@@ -49,12 +57,18 @@ return "festivalDetails";
             @Valid @ModelAttribute("festival") Festival festival,
             BindingResult result, Model model) {
 
-        model.addAttribute("locaties", Location.values());
-        model.addAttribute("categorieen", Food.values());
+        categoryConflictOnSameDayValidator.validate(festival, result);
+        nameDuplicateOnSameDayValidator.validate(festival, result);
 
-        if (result.hasErrors()) {
+        if(result.hasErrors()){
+            model.addAttribute("festival", festival);
+            model.addAttribute("locaties", Location.values());
+            model.addAttribute("categorieen", Food.values());
             return "festival-form";
         }
+
+        model.addAttribute("locaties", Location.values());
+        model.addAttribute("categorieen", Food.values());
 
         festivalService.save(festival);
         return "redirect:/festivals";

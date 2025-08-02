@@ -42,13 +42,4 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         return "redirect:/error";
     }
-
-    @ExceptionHandler(FestivalConflictException.class)
-    public String handleFestivalConflict(FestivalConflictException e, Model model) {
-        model.addAttribute("globalError", e.getMessage());
-
-        return "festival-form"; 
-    }
-
-
 }

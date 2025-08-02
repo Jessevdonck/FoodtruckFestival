@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Festival Toevoegen of Wijzigen</title>
-    <link rel="stylesheet" th:href="@{/css/navbar.css}" />
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/festival-form.css}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,10 +24,6 @@
     <div class="form-card">
         <form th:action="@{/festivals/add}" th:object="${festival}" method="post" class="festival-form" novalidate>
 
-            <div th:if="${globalError}" class="error-message">
-                <span class="error-icon">⚠️</span>
-                <span th:text="${globalError}"></span>
-            </div>
             <!-- Basis Informatie Sectie -->
             <div class="form-section">
                 <h2 class="section-title">

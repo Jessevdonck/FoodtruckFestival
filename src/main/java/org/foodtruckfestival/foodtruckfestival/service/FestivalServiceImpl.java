@@ -40,29 +40,6 @@ public class FestivalServiceImpl implements FestivalService
 
         @Override
         public Festival save(Festival festival) {
-            // Check dubbel naam in periode
-            boolean existsSameNameInPeriod = festivalRepository.existsByNameAndDateTimeBetween(
-                    festival.getName(),
-                    FESTIVAL_START_DATE.atStartOfDay(),
-                    FESTIVAL_END_DATE.atTime(23, 59, 59)
-            );
-
-            if (existsSameNameInPeriod) {
-                throw new FestivalConflictException("Er bestaat al een festival met dezelfde naam binnen deze periode.");
-            }
-
-            // Check zelfde categorie op dezelfde dag
-            boolean existsSameCategoryOnSameDay = festivalRepository.existsByCategorieAndDateTimeBetween(
-                    festival.getCategorie(),
-                    festival.getDateTime().withHour(0).withMinute(0).withSecond(0).withNano(0),
-                    festival.getDateTime().withHour(23).withMinute(59).withSecond(59).withNano(999999999)
-            );
-
-            if (existsSameCategoryOnSameDay) {
-                throw new FestivalConflictException("Er is al een festival met dezelfde categorie op dezelfde dag.");
-            }
-
-            // Als alles ok, sla op
             return festivalRepository.save(festival);
         }
 

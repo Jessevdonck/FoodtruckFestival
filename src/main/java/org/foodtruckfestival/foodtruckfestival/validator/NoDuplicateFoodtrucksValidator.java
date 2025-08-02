@@ -11,12 +11,20 @@ public class NoDuplicateFoodtrucksValidator implements ConstraintValidator<NoDup
 
     @Override
     public boolean isValid(List<String> foodtrucks, ConstraintValidatorContext context) {
+        if (foodtrucks == null || foodtrucks.isEmpty()) {
+            return true; // Laat andere validators NotEmpty en @NotBlank hun werk doen
+        }
+
         Set<String> set = new HashSet<>();
         for (String ft : foodtrucks) {
-            if (!set.add(ft)) {
-                return false;
+            if (ft == null || ft.trim().isEmpty()) {
+                continue; // Negeer lege waarden
+            }
+            if (!set.add(ft.trim())) {
+                return false; // Duplicate gevonden
             }
         }
         return true;
     }
+
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${festival.name} + ' - Festival Details'">Festival Detail</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/festival-details.css}"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -112,9 +113,6 @@
     <div class="action-buttons">
         <button class="btn btn-primary" onclick="alert('Ticket boeken functionaliteit komt binnenkort!')">
             🎫 Tickets Boeken
-        </button>
-        <button class="btn btn-secondary" onclick="alert('Delen functionaliteit komt binnenkort!')">
-            📤 Delen
         </button>
         <a th:href="@{/festivals}" class="btn btn-secondary">
             📋 Alle Festivals
