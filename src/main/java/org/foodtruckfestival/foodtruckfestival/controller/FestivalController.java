@@ -3,6 +3,7 @@ package org.foodtruckfestival.foodtruckfestival.controller;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
+import org.foodtruckfestival.foodtruckfestival.dto.RegistrationRequest;
 import org.foodtruckfestival.foodtruckfestival.enums.Food;
 import org.foodtruckfestival.foodtruckfestival.enums.Location;
 import org.foodtruckfestival.foodtruckfestival.validator.FestivalCategoryConflictOnSameDayValidator;
@@ -40,8 +41,9 @@ return "festivals";
 
 @GetMapping("/{id}")
 public String festivalDetails(@PathVariable Long id, Model model) {
-model.addAttribute("festival", festivalService.findFestivalDTOById(id));
-return "festivalDetails";
+    model.addAttribute("festival", festivalService.findFestivalDTOById(id));
+    model.addAttribute("registrationRequest", new RegistrationRequest());
+    return "festivalDetails";
 }
 
     @GetMapping("/add")

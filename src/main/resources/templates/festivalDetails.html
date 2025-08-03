@@ -111,13 +111,71 @@
 
     <!-- Action Buttons -->
     <div class="action-buttons">
-        <button class="btn btn-primary" onclick="alert('Ticket boeken functionaliteit komt binnenkort!')">
-            🎫 Tickets Boeken
-        </button>
-        <a th:href="@{/festivals}" class="btn btn-secondary">
-            📋 Alle Festivals
-        </a>
+        <form th:action="@{/register/{festivalId}(festivalId=${festival.id})}"
+              th:object="${registrationRequest}"
+              method="post"
+              class="booking-form"
+              novalidate>
+
+            <div class="form-group">
+                <label for="ticketsToBuy" class="form-label">
+                    <span class="label-icon">🎫</span>
+                    Aantal tickets
+                </label>
+                <div class="input-wrapper">
+                    <input id="ticketsToBuy"
+                           type="number"
+                           th:field="*{ticketsToBuy}"
+                           min="1"
+                           max="10"
+                           class="form-input"
+                           placeholder="1"
+                           required/>
+                    <div class="input-controls">
+                        <button type="button" class="input-btn input-btn-minus" onclick="decreaseTickets()">−</button>
+                        <button type="button" class="input-btn input-btn-plus" onclick="increaseTickets()">+</button>
+                    </div>
+                </div>
+
+                <div th:if="${#fields.hasErrors('ticketsToBuy')}" class="error-message">
+                    <span class="error-icon">⚠️</span>
+                    <span th:errors="*{ticketsToBuy}"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn-icon">🎫</span>
+                    Tickets Boeken
+                </button>
+                <a th:href="@{/festivals}" class="btn btn-secondary">
+                    <span class="btn-icon">📋</span>
+                    Alle Festivals
+                </a>
+            </div>
+        </form>
     </div>
+
+    <script>
+        function increaseTickets() {
+            const input = document.getElementById('ticketsToBuy');
+            const currentValue = parseInt(input.value) || 1;
+            const maxValue = parseInt(input.getAttribute('max')) || 10;
+            if (currentValue < maxValue) {
+                input.value = currentValue + 1;
+            }
+        }
+
+        function decreaseTickets() {
+            const input = document.getElementById('ticketsToBuy');
+            const currentValue = parseInt(input.value) || 1;
+            const minValue = parseInt(input.getAttribute('min')) || 1;
+            if (currentValue > minValue) {
+                input.value = currentValue - 1;
+            }
+        }
+    </script>
+
 </div>
 </body>
 </html>

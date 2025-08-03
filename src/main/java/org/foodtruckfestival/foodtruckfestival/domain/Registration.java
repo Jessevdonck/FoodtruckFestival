@@ -1,32 +1,32 @@
-package org.foodtruckfestival.foodtruckfestival.domain;
+    package org.foodtruckfestival.foodtruckfestival.domain;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+    import jakarta.persistence.*;
+    import lombok.*;
 
-import java.time.LocalDateTime;
+    import java.time.LocalDateTime;
 
-@Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Registration
-    {
+    @Entity
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    public class Registration
+        {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    public int aantalTickets;
+        public int amountOfTickets;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private MyUser user;
+        @ManyToOne
+        @JoinColumn(name = "user_id")
+        private MyUser user;
 
-    @ManyToOne
-    private Festival festival;
+        @ManyToOne
+        private Festival festival;
 
-    private LocalDateTime registrationTime;
-    }
+        private LocalDateTime registrationTime;
+        }
 

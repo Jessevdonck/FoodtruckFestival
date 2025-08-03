@@ -32,7 +32,7 @@ public class SecurityConfig {
                         // pages that require auth
                         .requestMatchers("/login","/festivals", "/").permitAll()
                         .requestMatchers("/festivals/add","/festivals/edit/**").hasRole(Role.ADMIN.name())
-                        .requestMatchers("/dashboard", "/festivals/**")
+                        .requestMatchers("/dashboard", "/festivals/**","/register/**")
                         .hasAnyRole(Role.USER.name(), Role.ADMIN.name())
 
 

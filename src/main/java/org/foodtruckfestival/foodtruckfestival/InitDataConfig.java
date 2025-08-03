@@ -67,7 +67,7 @@ festivalRepository.save(festival);
 Registration registration = Registration.builder()
         .user(user)
         .festival(festival)
-        .aantalTickets(2)
+        .amountOfTickets(2)
         .registrationTime(LocalDateTime.now())
         .build();
 

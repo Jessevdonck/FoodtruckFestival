@@ -9,4 +9,5 @@ Registration findById(Long id);
 List<Registration> findAll();
 Registration save(Registration registration);
 void deleteById(Long id);
+String registerForFestival(Long festivalId, String username, int ticketsToBuy);
 }

@@ -63,5 +63,12 @@ public class Festival
 
     @OneToMany(mappedBy = "festival")
     private List<Review> reviews;
+
+    @Transient
+    public int getAvailableTickets() {
+        if (registrations == null) return maxTickets;
+        int soldTickets = registrations.stream().mapToInt(Registration::getAmountOfTickets).sum();
+        return maxTickets - soldTickets;
+    }
     }
 

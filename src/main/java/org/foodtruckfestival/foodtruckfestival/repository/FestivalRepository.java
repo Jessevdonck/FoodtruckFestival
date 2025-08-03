@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface FestivalRepository extends JpaRepository<Festival, Long>
     {
-    @Query("SELECT f.maxTickets - COALESCE(SUM(r.aantalTickets), 0) FROM Festival f LEFT JOIN Registration r ON r.festival = f WHERE f.id = :festivalId GROUP BY f.id")
+    @Query("SELECT f.maxTickets - COALESCE(SUM(r.amountOfTickets), 0) FROM Festival f LEFT JOIN Registration r ON r.festival = f WHERE f.id = :festivalId GROUP BY f.id")
     Integer findAvailableTicketsByFestivalId(@Param("festivalId") Long festivalId);
     List<Festival> findByName(String name);
     List<Festival> findByCategorie(Food categorie);

@@ -1,5 +1,7 @@
 package org.foodtruckfestival.foodtruckfestival;
 
+import org.foodtruckfestival.foodtruckfestival.service.RegistrationService;
+import org.foodtruckfestival.foodtruckfestival.service.RegistrationServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -21,4 +23,9 @@ public class FoodtruckFestivalApplication {
 	FestivalService festivalService() {
 			return new FestivalServiceImpl();
 		}
+
+	@Bean
+	RegistrationService registrationService() {
+		return new RegistrationServiceImpl();
+	}
 }

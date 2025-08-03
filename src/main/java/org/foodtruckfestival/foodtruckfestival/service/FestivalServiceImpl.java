@@ -59,7 +59,7 @@ public class FestivalServiceImpl implements FestivalService
             return festivals.stream()
                     .sorted(Comparator.comparing(Festival::getDateTime))
                     .map(festival -> {
-                        int registrations = festival.getRegistrations().stream().mapToInt(r -> r.aantalTickets).sum();
+                        int registrations = festival.getRegistrations().stream().mapToInt(r -> r.amountOfTickets).sum();
                         int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
                         boolean isFuture = festival.getDateTime().isAfter(LocalDateTime.now());
 
@@ -89,7 +89,7 @@ public class FestivalServiceImpl implements FestivalService
         public FestivalDTO findFestivalDTOById(Long id) {
             Festival festival = festivalRepository.findById(id).orElseThrow(()->new FestivalNotFoundException(id.intValue()));
 
-            int registrationsCount = festival.getRegistrations().stream().mapToInt(r -> r.aantalTickets).sum();
+            int registrationsCount = festival.getRegistrations().stream().mapToInt(r -> r.amountOfTickets).sum();
             int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
 
             return new FestivalDTO(
