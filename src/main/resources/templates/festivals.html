@@ -60,7 +60,7 @@
                     <td data-label="Tickets">
                         <span class="tickets-available"
                               th:classappend="${festival.availableTickets < 20} ? 'tickets-sold-out' : (${festival.availableTickets < 10} ? 'tickets-sold-out')"
-                              th:text="${festival.availableTickets}">100</span>(${festival.availableTickets < 10}
+                              th:text="${festival.availableTickets}">100</span>
                     </td>
                     <td data-label="Prijs">
                         <span th:if="${festival.price != null}"
