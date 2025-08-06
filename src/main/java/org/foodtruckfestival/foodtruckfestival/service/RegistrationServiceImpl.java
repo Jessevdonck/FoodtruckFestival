@@ -62,4 +62,25 @@ public class RegistrationServiceImpl implements RegistrationService
 
             return ticketsToBuy + " tickets aangekocht.";
         }
-}
+
+        @Override
+        public int countTicketsForUserInFestivalPeriod(String username, Long festivalId) {
+            Festival festival = festivalRepository.findById(festivalId)
+                    .orElseThrow(() -> new RuntimeException("Festival niet gevonden"));
+
+            MyUser user = myUserRepository.findByUsername(username);
+
+            LocalDateTime startOfMonth = festival.getDateTime().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+            LocalDateTime endOfMonth = startOfMonth.plusMonths(1).minusNanos(1);
+
+            Integer total = registrationRepository.totalTicketsByUserInPeriod(user, startOfMonth, endOfMonth);
+
+            return total != null ? total : 0;
+        }
+
+        @Override
+        public int totalTicketsForFestivalByUser(MyUser user, Festival festival) {
+            return registrationRepository.totalTicketsForFestivalByUser(user, festival);
+        }
+
+    }

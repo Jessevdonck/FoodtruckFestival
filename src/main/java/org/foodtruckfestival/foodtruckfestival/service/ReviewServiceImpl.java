@@ -1,5 +1,7 @@
 package org.foodtruckfestival.foodtruckfestival.service;
 
+import org.foodtruckfestival.foodtruckfestival.domain.Festival;
+import org.foodtruckfestival.foodtruckfestival.domain.MyUser;
 import org.foodtruckfestival.foodtruckfestival.domain.Review;
 import org.foodtruckfestival.foodtruckfestival.exceptions.ReviewNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,30 +13,28 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService
     {
 
-private final ReviewRepository reviewRepository;
 
-@Autowired
-public ReviewServiceImpl(ReviewRepository reviewRepository) {
-this.reviewRepository = reviewRepository;
-}
+        @Autowired
+        private ReviewRepository reviewRepository;
 
-@Override
-public Review findById(Long id) {
-return reviewRepository.findById(id).orElseThrow(()->new ReviewNotFoundException(id));
-}
+        @Override
+        public Review findById(Long id) {
+            return reviewRepository.findById(id).orElse(null);
+        }
 
-@Override
-public List<Review> findAll() {
-return reviewRepository.findAll();
-}
+        @Override
+        public List<Review> getReviewsForFestival(Festival festival) {
+            return reviewRepository.findByFestivalOrderByPostedAtDesc(festival);
+        }
 
-@Override
-public Review save(Review review) {
-return reviewRepository.save(review);
-}
+        @Override
+        public boolean hasUserWrittenReview(MyUser user, Festival festival) {
+            return reviewRepository.existsByUserAndFestival(user, festival);
+        }
 
-@Override
-public void deleteById(Long id) {
-reviewRepository.deleteById(id);
-}
+        @Override
+        public Double getAverageScoreForFestival(Festival festival) {
+            Double avg = reviewRepository.findAverageScoreByFestival(festival);
+            return avg != null ? avg : 0.0  ;
+        }
 }

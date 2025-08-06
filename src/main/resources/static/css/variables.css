@@ -34,6 +34,11 @@
     --warning-500: #f59e0b;
     --warning-600: #d97706;
 
+    --info-50: #eff6ff;
+    --info-100: #dbeafe;
+    --info-500: #3b82f6;
+    --info-600: #2563eb;
+
     /* Spacing */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;

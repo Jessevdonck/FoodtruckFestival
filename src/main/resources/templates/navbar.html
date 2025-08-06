@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Navigation</title>
-    <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,15 +24,17 @@
             <!-- Navigation Links -->
             <div class="navbar-nav">
                 <a href="/" class="nav-link">
+                    <span class="nav-icon">🏠</span>
                     <span class="nav-text">Home</span>
                 </a>
                 <a href="/festivals" class="nav-link">
+                    <span class="nav-icon">🎵</span>
                     <span class="nav-text">Festivals</span>
                 </a>
             </div>
 
-            <!-- User Section -->
-            <div class="navbar-user">
+            <!-- User Section - Ingelogd -->
+            <div th:if="${username != null}" class="navbar-user">
                 <div class="user-info">
                     <div class="user-profile">
                         <div class="user-avatar">
@@ -73,6 +74,13 @@
                 </div>
             </div>
 
+            <!-- User Section - Uitgelogd -->
+            <div th:unless="${username != null}" class="navbar-auth">
+                <a href="/login" class="btn-login">
+                    <span class="login-text">Inloggen</span>
+                </a>
+            </div>
+
             <!-- Mobile Menu Button -->
             <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
                 <span class="hamburger-line"></span>
@@ -88,29 +96,33 @@
                 Home
             </a>
             <a href="/festivals" class="mobile-nav-link">
-                <span class="nav-icon">🎵</span>
+                <span class="nav-icon">🚚</span>
                 Festivals
             </a>
-            <a href="/events" class="mobile-nav-link">
-                <span class="nav-icon">📅</span>
-                Events
-            </a>
-            <div class="mobile-divider"></div>
-            <a href="/profile" class="mobile-nav-link">
-                <span class="nav-icon">👤</span>
-                Profiel
-            </a>
-            <a href="/settings" class="mobile-nav-link">
-                <span class="nav-icon">⚙️</span>
-                Instellingen
-            </a>
-            <form method="post" th:action="@{/logout}" class="mobile-logout-form">
-                <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
-                <button type="submit" class="mobile-nav-link logout-btn">
-                    <span class="nav-icon">🚪</span>
-                    Uitloggen
-                </button>
-            </form>
+
+            <!-- Mobile - Ingelogd -->
+            <div th:if="${username != null}">
+                <div class="mobile-divider"></div>
+                <a href="/profile" class="mobile-nav-link">
+                    <span class="nav-icon">👤</span>
+                    Profiel
+                </a>
+                <form method="post" th:action="@{/logout}" class="mobile-logout-form">
+                    <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+                    <button type="submit" class="mobile-nav-link logout-btn">
+                        <span class="nav-icon">🚪</span>
+                        Uitloggen
+                    </button>
+                </form>
+            </div>
+
+            <!-- Mobile - Uitgelogd -->
+            <div th:unless="${username != null}">
+                <div class="mobile-divider"></div>
+                <a href="/login" class="mobile-nav-link">
+                    Inloggen
+                </a>
+            </div>
         </div>
     </nav>
 </div>
@@ -119,7 +131,9 @@
 <script th:fragment="navbar-script">
     function toggleUserMenu() {
         const dropdown = document.getElementById('userDropdown');
-        dropdown.classList.toggle('show');
+        if (dropdown) {
+            dropdown.classList.toggle('show');
+        }
     }
 
     function toggleMobileMenu() {
@@ -134,7 +148,7 @@
         const userActions = document.querySelector('.user-actions');
         const dropdown = document.getElementById('userDropdown');
 
-        if (userActions && !userActions.contains(event.target)) {
+        if (userActions && dropdown && !userActions.contains(event.target)) {
             dropdown.classList.remove('show');
         }
     });

@@ -32,7 +32,7 @@ public class SecurityConfig {
                         // pages that require auth
                         .requestMatchers("/login","/festivals", "/").permitAll()
                         .requestMatchers("/festivals/add","/festivals/edit/**").hasRole(Role.ADMIN.name())
-                        .requestMatchers("/dashboard", "/festivals/**","/register/**")
+                        .requestMatchers("/dashboard", "/festivals/**","/register/**", "/reviews/**")
                         .hasAnyRole(Role.USER.name(), Role.ADMIN.name())
 
 
@@ -49,8 +49,12 @@ public class SecurityConfig {
                 .formLogin(form -> form.defaultSuccessUrl("/festivals", true)
                         .loginPage("/login")
                         .usernameParameter("username").passwordParameter("password"))
+                        .logout(logout -> logout
+                                .logoutSuccessUrl("/festivals")
+                        )
                 .exceptionHandling(handling -> handling
                         .accessDeniedPage("/error?errorCode=403&errorMessage=Access+Denied"));
+
 
         return http.build();
     }

@@ -391,3 +391,77 @@
     outline: 2px solid rgba(255, 255, 255, 0.5);
     outline-offset: 2px;
 }
+
+/* Login Button Styles - Uitgelogd */
+.navbar-auth {
+    flex-shrink: 0;
+}
+
+.btn-login {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    background: linear-gradient(135deg, rgba(var(--info-500)) 0%, rgba(var(--info-600)) 70%);
+    border: 2px solid rgba(var(--neutral-300));
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-login:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.35) 100%);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.login-icon {
+    font-size: 0.875rem;
+}
+
+.login-text {
+    font-weight: 600;
+}
+
+/* Mobile responsive voor login button */
+@media (max-width: 768px) {
+    .navbar-auth {
+        display: flex;
+    }
+
+    .btn-login {
+        padding: var(--spacing-xs) var(--spacing-md);
+        font-size: 0.8125rem;
+    }
+
+    .login-text {
+        display: none;
+    }
+
+    .login-icon {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .btn-login {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 50%;
+    }
+}
+
+/* Focus state voor login button */
+.btn-login:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+

@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ValidFestivalCodes
-@ValidFestivalDate(start = "2025-07-01", end = "2025-07-31")
+@ValidFestivalDate(start = "2025-06-01", end = "2025-10-31")
 public class Festival
     {
 

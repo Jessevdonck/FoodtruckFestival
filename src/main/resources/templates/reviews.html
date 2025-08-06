@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Reviews - ' + ${festival.name}">Reviews</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" th:href="@{/css/reviews.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Include Navbar -->
+<div th:replace="~{/navbar}"></div>
+
+<div class="main-container">
+    <!-- Back Button -->
+    <div class="back-section">
+        <a th:href="@{/festivals/{id}(id=${festival.id})}" class="back-button">
+            <span class="back-icon">←</span>
+            <span class="back-text">Terug naar festival</span>
+        </a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title" th:text="'Reviews voor ' + ${festival.name}">Festival Reviews</h1>
+        <div class="average-score-card">
+            <div class="score-icon">⭐</div>
+            <div class="score-content">
+                <div class="score-label">Gemiddelde score</div>
+                <div class="score-value" th:text="${#numbers.formatDecimal(averageScore, 1, 1)}">0.0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews List -->
+    <div class="reviews-section">
+        <h2 class="section-title">
+            <span class="section-icon">💬</span>
+            Alle Reviews
+        </h2>
+
+        <div class="reviews-list">
+            <div th:each="review : ${reviews}" class="review-card">
+                <div class="review-header">
+                    <div class="review-score">
+                        <span class="score-stars">⭐</span>
+                        <span class="score-number" th:text="${review.score}">5</span>
+                    </div>
+                    <div class="review-meta">
+                        <div class="review-author">
+                            <span class="author-icon">👤</span>
+                            <span th:text="${review.user.username}">Gebruiker</span>
+                        </div>
+                        <div class="review-date" th:text="${#temporals.format(review.postedAt, 'dd-MM-yyyy HH:mm')}">Datum</div>
+                    </div>
+                </div>
+                <div class="review-content">
+                    <p class="review-description" th:text="${review.description}">Beschrijving...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Write Review Section -->
+    <div class="write-review-section">
+        <div th:if="${canWriteReview}" class="write-review-card">
+            <div class="write-review-content">
+                <h3 class="write-review-title">Deel jouw ervaring</h3>
+                <p class="write-review-subtitle">Vertel anderen over dit festival</p>
+            </div>
+            <a th:href="@{/reviews/write/{festivalId}(festivalId=${festival.id})}" class="btn-write-review">
+                <span class="btn-icon">✍️</span>
+                <span class="btn-text">Schrijf een Review</span>
+            </a>
+        </div>
+
+        <div th:if="${!canWriteReview}" class="info-card">
+            <div class="info-icon">ℹ️</div>
+            <div class="info-content">
+                <h3 class="info-title">Review niet mogelijk</h3>
+                <p class="info-message">Je kunt alleen een review schrijven als je ingeschreven bent, het festival heeft plaatsgevonden en je nog geen review hebt geschreven.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

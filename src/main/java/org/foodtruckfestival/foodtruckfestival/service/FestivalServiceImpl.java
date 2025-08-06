@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 @Service
 public class FestivalServiceImpl implements FestivalService
     {
-        private static final LocalDate FESTIVAL_START_DATE = LocalDate.of(2025, 7, 1);
-        private static final LocalDate FESTIVAL_END_DATE = LocalDate.of(2025, 7, 31);
+        private static final LocalDate FESTIVAL_START_DATE = LocalDate.of(2025, 6, 1);
+        private static final LocalDate FESTIVAL_END_DATE = LocalDate.of(2025, 10, 31);
 
         @Autowired
         private FestivalRepository festivalRepository;

@@ -148,6 +148,10 @@
                     <span class="btn-icon">🎫</span>
                     Tickets Boeken
                 </button>
+                <a th:href="@{/reviews/{festivalId}(festivalId=${festival.id})}" class="btn btn-secondary">
+                    <span class="btn-icon">⭐</span>
+                    Reviews
+                </a>
                 <a th:href="@{/festivals}" class="btn btn-secondary">
                     <span class="btn-icon">📋</span>
                     Alle Festivals

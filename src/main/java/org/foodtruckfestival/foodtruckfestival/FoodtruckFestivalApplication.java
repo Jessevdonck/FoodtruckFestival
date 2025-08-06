@@ -1,14 +1,11 @@
 package org.foodtruckfestival.foodtruckfestival;
 
-import org.foodtruckfestival.foodtruckfestival.service.RegistrationService;
-import org.foodtruckfestival.foodtruckfestival.service.RegistrationServiceImpl;
+import org.foodtruckfestival.foodtruckfestival.service.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.foodtruckfestival.foodtruckfestival.service.FestivalService;
-import org.foodtruckfestival.foodtruckfestival.service.FestivalServiceImpl;
 
 @SpringBootApplication
 @EnableJpaRepositories("org.foodtruckfestival.foodtruckfestival.repository")
@@ -27,5 +24,10 @@ public class FoodtruckFestivalApplication {
 	@Bean
 	RegistrationService registrationService() {
 		return new RegistrationServiceImpl();
+	}
+
+	@Bean
+	ReviewService reviewService() {
+		return new ReviewServiceImpl();
 	}
 }

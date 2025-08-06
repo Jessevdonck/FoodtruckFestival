@@ -7,6 +7,8 @@ import org.foodtruckfestival.foodtruckfestival.dto.FestivalDTO;
 import org.foodtruckfestival.foodtruckfestival.dto.RegistrationRequest;
 import org.foodtruckfestival.foodtruckfestival.service.FestivalService;
 import org.foodtruckfestival.foodtruckfestival.service.RegistrationService;
+import org.foodtruckfestival.foodtruckfestival.validator.FestivalCategoryConflictOnSameDayValidator;
+import org.foodtruckfestival.foodtruckfestival.validator.RegistrationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,9 @@ public class RegistrationController {
     RegistrationService registrationService;
     @Autowired
     FestivalService festivalService;
+
+    @Autowired
+    RegistrationValidator registrationValidator;
 
     @GetMapping("/{festivalId}")
     public String showRegistrationForm(@PathVariable Long festivalId, Model model) {
@@ -43,6 +48,8 @@ public class RegistrationController {
             Model model) {
 
         FestivalDTO festival = festivalService.findFestivalDTOById(festivalId);
+
+        registrationValidator.validate(request, festivalId, principal.getName(), result);
 
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
