@@ -12,10 +12,13 @@ import java.util.List;
 @Service
 public class ReviewServiceImpl implements ReviewService
     {
-
-
         @Autowired
         private ReviewRepository reviewRepository;
+
+        @Override
+        public Review save(Review review) {
+            return reviewRepository.save(review);
+        }
 
         @Override
         public Review findById(Long id) {

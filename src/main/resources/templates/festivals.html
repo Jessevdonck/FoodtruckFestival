@@ -18,14 +18,14 @@
 <div class="main-container">
     <!-- Page Header -->
     <div class="page-header">
-        <h1 class="page-title">Festival Overzicht</h1>
-        <p class="page-subtitle">Ontdek de beste festivals en evenementen</p>
+        <h1 class="page-title" th:text="#{festival.overview.title}" />
+        <p class="page-subtitle" th:text="#{festival.overview.subtitle}" />
     </div>
 
     <div th:if="${userRole == 'admin'}" class="add-festival-button">
-        <button class="btn-add-festival" title="Festival toevoegen" onclick="window.location.href='/festivals/add'">
-            +
-        </button>
+        <button class="btn-add-festival" title="Festival toevoegen"
+                th:title="#{festival.add.button.title}"
+                onclick="window.location.href='/festivals/add'">+</button>
     </div>
 
     <!-- Festivals Card -->
@@ -34,33 +34,33 @@
             <table class="festivals-table">
                 <thead>
                 <tr>
-                    <th scope="col">Festival</th>
-                    <th scope="col">Locatie</th>
-                    <th scope="col">Categorie</th>
-                    <th scope="col">Datum & Tijd</th>
-                    <th scope="col">Tickets</th>
-                    <th scope="col">Prijs</th>
-                    <th scope="col">Actie</th>
+                    <th scope="col" th:text="#{festival.table.header.name}" />
+                    <th scope="col" th:text="#{festival.table.header.location}" />
+                    <th scope="col" th:text="#{festival.table.header.category}" />
+                    <th scope="col" th:text="#{festival.table.header.datetime}" />
+                    <th scope="col" th:text="#{festival.table.header.tickets}" />
+                    <th scope="col" th:text="#{festival.table.header.price}" />
+                    <th scope="col" th:text="#{festival.table.header.action}" />
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="festival : ${festivals}">
+                <tr th:each="festival : ${festivals}" th:with="datePattern=#{date.format.pattern}">
                     <td data-label="Festival">
-                        <span class="festival-name" th:text="${festival.name}">Festival Naam</span>
+                        <span class="festival-name" th:text="${festival.name}"></span>
                     </td>
                     <td data-label="Locatie">
-                        <span class="festival-location" th:text="${festival.location}">Locatie</span>
+                        <span class="festival-location" th:text="${festival.location}"></span>
                     </td>
                     <td data-label="Categorie">
-                        <span class="category-badge" th:text="${festival.categorie}">Categorie</span>
+                        <span class="category-badge" th:text="${festival.categorie}"></span>
                     </td>
                     <td data-label="Datum & Tijd">
-                        <span class="festival-datetime" th:text="${festival.dateTime}">Datum</span>
+                        <span class="festival-datetime" th:text="${#temporals.format(festival.dateTime, datePattern)}"></span>
                     </td>
                     <td data-label="Tickets">
                         <span class="tickets-available"
                               th:classappend="${festival.availableTickets < 20} ? 'tickets-sold-out' : (${festival.availableTickets < 10} ? 'tickets-sold-out')"
-                              th:text="${festival.availableTickets}">100</span>
+                              th:text="${festival.availableTickets}"></span>
                     </td>
                     <td data-label="Prijs">
                         <span th:if="${festival.price != null}"
@@ -73,14 +73,14 @@
                         <div class="action-buttons">
                             <a th:href="@{/festivals/{id}(id=${festival.id})}"
                                class="btn-details"
-                               th:attr="aria-label='Bekijk details van ' + ${festival.name}">
-                                Details
+                               th:attr="aria-label=#{festival.details.aria} + ' ' + ${festival.name}"
+                               th:text="#{festival.details}">
                             </a>
                             <a th:if="${userRole == 'admin'}"
                                th:href="@{/festivals/edit/{id}(id=${festival.id})}"
                                class="btn-edit"
-                               th:attr="aria-label='Bewerk ' + ${festival.name}"
-                               title="Festival bewerken">
+                               th:attr="aria-label=#{festival.edit.aria} + ' ' + ${festival.name}"
+                               th:title="#{festival.edit.title}">
                                 ✏️
                             </a>
                         </div>
@@ -92,9 +92,9 @@
 
         <!-- Empty State -->
         <div th:if="${festivals.isEmpty()}" class="empty-state">
-            <div class="empty-state-icon">🎪</div>
-            <h2 class="empty-state-title">Geen festivals gevonden</h2>
-            <p class="empty-state-message">Er zijn momenteel geen festivals beschikbaar. Kom later terug voor nieuwe evenementen!</p>
+            <div class="empty-state-icon">🚚</div>
+            <h2 class="empty-state-title" th:text="#{festival.empty.title}" />
+            <p class="empty-state-message" th:text="#{festival.empty.message}" />
         </div>
     </div>
 </div>

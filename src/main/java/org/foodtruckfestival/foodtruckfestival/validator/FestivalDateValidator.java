@@ -3,21 +3,17 @@ package org.foodtruckfestival.foodtruckfestival.validator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
-import org.foodtruckfestival.foodtruckfestival.validator.ValidFestivalDate;
+import org.foodtruckfestival.foodtruckfestival.utils.FestivalConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class FestivalDateValidator implements ConstraintValidator<ValidFestivalDate, Festival> {
 
-    private LocalDate startDate;
-    private LocalDate endDate;
-
-    @Override
-    public void initialize(ValidFestivalDate constraintAnnotation) {
-        this.startDate = LocalDate.parse(constraintAnnotation.start());
-        this.endDate = LocalDate.parse(constraintAnnotation.end());
-    }
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     public boolean isValid(Festival festival, ConstraintValidatorContext context) {
@@ -27,11 +23,19 @@ public class FestivalDateValidator implements ConstraintValidator<ValidFestivalD
 
         LocalDate date = festival.getDateTime().toLocalDate();
 
-        if (date.isBefore(startDate) || date.isAfter(endDate)) {
+        if (date.isBefore(FestivalConstants.START_DATE) || date.isAfter(FestivalConstants.END_DATE)) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                    "De datum moet tussen " + startDate + " en " + endDate + " liggen."
-            ).addPropertyNode("dateTime").addConstraintViolation();
+
+            String errorMessage = messageSource.getMessage(
+                    "festival.date.invalid",
+                    new Object[]{FestivalConstants.START_DATE, FestivalConstants.END_DATE},
+                    Locale.getDefault()
+            );
+
+            context.buildConstraintViolationWithTemplate(errorMessage)
+                    .addPropertyNode("dateTime")
+                    .addConstraintViolation();
+
             return false;
         }
 

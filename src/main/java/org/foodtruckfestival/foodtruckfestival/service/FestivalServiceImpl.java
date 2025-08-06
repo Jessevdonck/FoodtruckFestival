@@ -1,18 +1,14 @@
 package org.foodtruckfestival.foodtruckfestival.service;
 
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
-import org.foodtruckfestival.foodtruckfestival.domain.Registration;
 import org.foodtruckfestival.foodtruckfestival.dto.FestivalDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.foodtruckfestival.foodtruckfestival.exceptions.FestivalConflictException;
+import org.foodtruckfestival.foodtruckfestival.enums.Food;
 import org.foodtruckfestival.foodtruckfestival.exceptions.FestivalNotFoundException;
 import org.foodtruckfestival.foodtruckfestival.exceptions.NoFestivalsException;
-import org.foodtruckfestival.foodtruckfestival.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.FestivalRepository;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -22,8 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class FestivalServiceImpl implements FestivalService
     {
-        private static final LocalDate FESTIVAL_START_DATE = LocalDate.of(2025, 6, 1);
-        private static final LocalDate FESTIVAL_END_DATE = LocalDate.of(2025, 10, 31);
+
 
         @Autowired
         private FestivalRepository festivalRepository;
@@ -66,7 +61,7 @@ public class FestivalServiceImpl implements FestivalService
                         return new FestivalDTO(
                                 festival.getId(),
                                 festival.getName(),
-                                festival.getLocation(),
+                                festival.getLocation().name(),
                                 festival.getCategorie().toString(),
                                 festival.getDateTime(),
                                 availableTickets,
@@ -95,7 +90,7 @@ public class FestivalServiceImpl implements FestivalService
             return new FestivalDTO(
                     festival.getId(),
                     festival.getName(),
-                    festival.getLocation(),
+                    festival.getLocation().name(),
                     festival.getCategorie().toString(),
                     festival.getDateTime(),
                     availableTickets,
@@ -121,5 +116,10 @@ public class FestivalServiceImpl implements FestivalService
             existingFestival.setPrice(updatedFestival.getPrice());
 
             return festivalRepository.save(existingFestival);
+        }
+
+        @Override
+        public List<Festival> getFestivalsByCategory(Food category) {
+            return festivalRepository.findByCategorie(category);
         }
     }

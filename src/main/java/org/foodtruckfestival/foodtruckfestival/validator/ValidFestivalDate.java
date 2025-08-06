@@ -11,12 +11,9 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidFestivalDate {
-    String message() default "{festival.date.invalid}";
+    String message() default "{festival.date.default}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
-    String start();
-    String end();
 }

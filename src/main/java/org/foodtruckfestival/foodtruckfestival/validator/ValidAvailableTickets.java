@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidAvailableTickets {
-    String message() default "Niet genoeg beschikbare tickets voor deze aanvraag.";
+    String message() default "{registration.available}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

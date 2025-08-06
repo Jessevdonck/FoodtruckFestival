@@ -22,7 +22,7 @@ public class NoDuplicateFoodtrucksValidator implements ConstraintValidator<NoDup
         for (String ft : foodtrucks) {
             if (ft == null || ft.trim().isEmpty()) {
                 context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate("Je moet minstens één foodtruck invullen")
+                context.buildConstraintViolationWithTemplate("{foodtruck.blank}")
                         .addConstraintViolation();
                 continue; // leeg negeren
             }

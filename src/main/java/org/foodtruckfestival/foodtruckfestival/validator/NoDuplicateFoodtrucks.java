@@ -10,7 +10,7 @@
     @Target({ ElementType.FIELD, ElementType.METHOD })
     @Retention(RetentionPolicy.RUNTIME)
     public @interface NoDuplicateFoodtrucks {
-        String message() default "Geen dubbele standhouders toegestaan";
+        String message() default "{foodtruck.double}";
         Class<?>[] groups() default {};
         Class<? extends Payload>[] payload() default {};
     }

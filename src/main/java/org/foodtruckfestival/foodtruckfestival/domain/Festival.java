@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.foodtruckfestival.foodtruckfestival.enums.Food;
+import org.foodtruckfestival.foodtruckfestival.enums.Location;
 import org.foodtruckfestival.foodtruckfestival.validator.NoDuplicateFoodtrucks;
 import org.foodtruckfestival.foodtruckfestival.validator.ValidFestivalCodes;
 import org.foodtruckfestival.foodtruckfestival.validator.ValidFestivalDate;
@@ -20,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ValidFestivalCodes
-@ValidFestivalDate(start = "2025-06-01", end = "2025-10-31")
+@ValidFestivalDate
 public class Festival
     {
 
@@ -28,8 +29,8 @@ public class Festival
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Festival naam is verplicht")
-    @Pattern(regexp = "^[A-Za-z]{3,}.*", message = "Naam moet beginnen met minstens drie letters")
+    @NotBlank(message = "{festival.name.blank}")
+    @Pattern(regexp = "^[A-Za-z]{3,}.*", message = "{festival.name.invalid}")
     private String name;
 
     @ElementCollection
@@ -38,23 +39,24 @@ public class Festival
     @Size(max = 4)
     private List<String> foodtrucks;
 
-    @NotBlank
-    private String location;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "{festival.name.invalid}")
+    private Location location;
 
     @Enumerated(EnumType.STRING)
     private Food categorie;
 
-    @NotNull(message = "Datum is verplicht")
+    @NotNull(message = "{festival.date.blank}")
     private LocalDateTime dateTime;
 
     private int festivalCode1;
     private int festivalCode2;
 
-    @Min(value = 50, message = "Minstens 50 tickets")
-    @Max(value = 250, message = "Maximum 250 tickets")
+    @Min(value = 50, message = "{festival.tickets.min}")
+    @Max(value = 250, message = "{festival.tickets.max}")
     private int maxTickets;
 
-    @NotNull(message = "Prijs is verplicht")
+    @NotNull(message = "{festival.price.blank}")
     @ValidPrice
     private BigDecimal price;
 

@@ -88,6 +88,9 @@ public String festivalDetails(@PathVariable Long id, Model model) {
 
         @PostMapping("/edit/{id}")
         public String updateFestival(@PathVariable Long id, @Valid Festival festival, BindingResult result, Model model) {
+            categoryConflictOnSameDayValidator.validate(festival, result);
+            nameDuplicateOnSameDayValidator.validate(festival, result);
+
             if (result.hasErrors()) {
                 model.addAttribute("locaties", Location.values());
                 model.addAttribute("categorieen", Food.values());

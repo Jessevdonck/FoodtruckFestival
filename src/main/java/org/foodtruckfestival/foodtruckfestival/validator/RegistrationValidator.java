@@ -33,12 +33,12 @@ public class RegistrationValidator implements Validator {
 
         // Max 30 tickets per festival
         if (ticketsAlreadyBoughtForFestival + ticketsToBuy > 30) {
-            errors.rejectValue("ticketsToBuy", "tickets.limit.exceeded", "Je kan maximaal 30 tickets per festival kopen.");
+            errors.rejectValue("ticketsToBuy", "tickets.limit.exceeded");
         }
 
         // Max 100 tickets in same festival period
         if (totalTicketsInPeriod + ticketsToBuy > 100) {
-            errors.rejectValue("ticketsToBuy", "tickets.period.limit.exceeded", "Je kan niet meer dan 100 tickets kopen binnen dezelfde festivalperiode.");
+            errors.rejectValue("ticketsToBuy", "tickets.period.limit.exceeded");
         }
     }
 }

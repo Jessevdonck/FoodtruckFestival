@@ -6,6 +6,8 @@ import org.foodtruckfestival.foodtruckfestival.domain.Festival;
 import org.foodtruckfestival.foodtruckfestival.dto.RegistrationRequest;
 import org.foodtruckfestival.foodtruckfestival.repository.FestivalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,6 +15,9 @@ public class AvailableTicketsValidator implements ConstraintValidator<ValidAvail
 
     @Autowired
     private FestivalRepository festivalRepository;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     public boolean isValid(RegistrationRequest request, ConstraintValidatorContext context) {
@@ -22,12 +27,13 @@ public class AvailableTicketsValidator implements ConstraintValidator<ValidAvail
 
         Festival festival = festivalRepository.findById(request.getFestivalId()).orElse(null);
         if (festival == null) {
-            return true; // validatie van bestaan gebeurt elders (of kan je hier nog toevoegen)
+            return true;
         }
 
         if (festival.getAvailableTickets() < request.getTicketsToBuy()) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("Niet genoeg tickets beschikbaar.")
+            String errorMessage = messageSource.getMessage("registration.tickets.notEnough", null, LocaleContextHolder.getLocale());
+            context.buildConstraintViolationWithTemplate(errorMessage)
                     .addPropertyNode("ticketsToBuy")
                     .addConstraintViolation();
             return false;

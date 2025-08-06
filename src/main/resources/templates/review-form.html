@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Schrijven</title>
+    <link rel="stylesheet" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" th:href="@{/css/review-form.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Include Navbar -->
+<div th:replace="~{/navbar}"></div>
+
+<div class="main-container">
+    <!-- Back Button -->
+    <div class="back-section">
+        <a th:href="@{/festivals/{id}(id=${festival.id})}" class="back-button">
+            <span class="back-icon">←</span>
+            <span class="back-text">Terug naar festival</span>
+        </a>
+    </div>
+
+    <!-- Form Header -->
+    <div class="form-header">
+        <h1 class="form-title" th:text="'Review voor ' + ${festival.name}">Review Schrijven</h1>
+        <p class="form-subtitle">Deel jouw ervaring met andere festivalgangers</p>
+    </div>
+
+    <!-- Review Form Card -->
+    <div class="form-card">
+        <form th:action="@{/reviews/{festivalId}/add(festivalId=${festival.id})}" th:object="${review}" method="post" class="review-form">
+            <input type="hidden" th:field="*{festival.id}" />
+
+            <!-- Score Section -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">⭐</span>
+                    Beoordeling
+                </h2>
+
+                <div class="form-group">
+                    <label for="score" class="form-label">
+                        Geef een score
+                        <span class="required">*</span>
+                    </label>
+                    <div class="score-input-container">
+                        <div class="star-rating" id="starRating">
+                            <button type="button" class="star-btn" data-score="1">
+                                <span class="star-icon">⭐</span>
+                                <span class="star-label">Slecht</span>
+                            </button>
+                            <button type="button" class="star-btn" data-score="2">
+                                <span class="star-icon">⭐</span>
+                                <span class="star-label">Matig</span>
+                            </button>
+                            <button type="button" class="star-btn" data-score="3">
+                                <span class="star-icon">⭐</span>
+                                <span class="star-label">Goed</span>
+                            </button>
+                            <button type="button" class="star-btn" data-score="4">
+                                <span class="star-icon">⭐</span>
+                                <span class="star-label">Zeer goed</span>
+                            </button>
+                            <button type="button" class="star-btn" data-score="5">
+                                <span class="star-icon">⭐</span>
+                                <span class="star-label">Uitstekend</span>
+                            </button>
+                        </div>
+                        <input type="number" id="score" th:field="*{score}" min="1" max="5" required class="score-input" style="display: none;" />
+                    </div>
+                    <div class="form-hint">Klik op de sterren om jouw beoordeling te geven</div>
+                    <div th:if="${#fields.hasErrors('score')}" class="error-message">
+                        <span class="error-icon">⚠️</span>
+                        <span th:errors="*{score}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description Section -->
+            <div class="form-section">
+                <h2 class="section-title">
+                    <span class="section-icon">💬</span>
+                    Jouw Ervaring
+                </h2>
+
+                <div class="form-group">
+                    <label for="description" class="form-label">
+                        Beschrijving
+                        <span class="required">*</span>
+                    </label>
+                    <textarea
+                            id="description"
+                            th:field="*{description}"
+                            required
+                            class="form-textarea"
+                            placeholder="Vertel over jouw ervaring op dit festival. Wat vond je leuk? Wat kan beter? Deel jouw mening..."
+                            rows="6"
+                    ></textarea>
+                    <div class="character-count">
+                        <span id="charCount">0</span>/500
+                    </div>
+                    <div th:if="${#fields.hasErrors('description')}" class="error-message">
+                        <span class="error-icon">⚠️</span>
+                        <span th:errors="*{description}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <span class="btn-text">Review Verzenden</span>
+                </button>
+                <a th:href="@{/festivals/{id}(id=${festival.id})}" class="btn-cancel">
+                    <span class="btn-icon">❌</span>
+                    <span class="btn-text">Annuleren</span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const starButtons = document.querySelectorAll('.star-btn');
+        const scoreInput = document.getElementById('score');
+        const textarea = document.getElementById('description');
+        const charCount = document.getElementById('charCount');
+
+        // Star rating functionality
+        starButtons.forEach((button, index) => {
+            button.addEventListener('click', function() {
+                const score = parseInt(this.dataset.score);
+                scoreInput.value = score;
+
+                // Update visual state
+                starButtons.forEach((btn, btnIndex) => {
+                    if (btnIndex < score) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            });
+
+            // Hover effects
+            button.addEventListener('mouseenter', function() {
+                const score = parseInt(this.dataset.score);
+                starButtons.forEach((btn, btnIndex) => {
+                    if (btnIndex < score) {
+                        btn.classList.add('hover');
+                    } else {
+                        btn.classList.remove('hover');
+                    }
+                });
+            });
+        });
+
+        // Reset hover state when leaving star container
+        document.getElementById('starRating').addEventListener('mouseleave', function() {
+            starButtons.forEach(btn => btn.classList.remove('hover'));
+        });
+
+        // Character counter
+        function updateCharCount() {
+            const count = textarea.value.length;
+            charCount.textContent = count;
+
+            if (count > 500) {
+                charCount.parentElement.classList.add('over-limit');
+            } else {
+                charCount.parentElement.classList.remove('over-limit');
+            }
+        }
+
+        textarea.addEventListener('input', updateCharCount);
+        updateCharCount(); // Initial count
+
+        // Set initial star rating if score exists
+        const initialScore = scoreInput.value;
+        if (initialScore) {
+            starButtons.forEach((btn, index) => {
+                if (index < parseInt(initialScore)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

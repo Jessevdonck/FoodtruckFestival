@@ -3,8 +3,15 @@ package org.foodtruckfestival.foodtruckfestival.validator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+
+import java.util.Locale;
 
 public class FestivalCodesValidator implements ConstraintValidator<ValidFestivalCodes, Festival> {
+
+    @Autowired
+    private MessageSource  messageSource;
 
     @Override
     public boolean isValid(Festival festival, ConstraintValidatorContext context) {
@@ -18,7 +25,8 @@ public class FestivalCodesValidator implements ConstraintValidator<ValidFestival
 
         if (code1 != null) {
             if (code1 <= 0 || code1 % 2 != 0) {
-                context.buildConstraintViolationWithTemplate("Festivalcode1 moet een strikt even positief getal zijn.")
+                String errorMessage = messageSource.getMessage("festival.code1.invalid", null, Locale.getDefault());
+                context.buildConstraintViolationWithTemplate(errorMessage)
                         .addPropertyNode("festivalCode1")
                         .addConstraintViolation();
                 valid = false;
@@ -27,7 +35,8 @@ public class FestivalCodesValidator implements ConstraintValidator<ValidFestival
 
         if (code2 != null) {
             if (code2 % 3 != 0) {
-                context.buildConstraintViolationWithTemplate("Festivalcode2 moet deelbaar zijn door 3.")
+                String errorMessage = messageSource.getMessage("festival.code2.invalid", null, Locale.getDefault());
+                context.buildConstraintViolationWithTemplate(errorMessage)
                         .addPropertyNode("festivalCode2")
                         .addConstraintViolation();
                 valid = false;
@@ -36,7 +45,8 @@ public class FestivalCodesValidator implements ConstraintValidator<ValidFestival
 
         if (code1 != null && code2 != null) {
             if (Math.abs(code1 - code2) >= 300) {
-                context.buildConstraintViolationWithTemplate("Het verschil tussen festivalcode1 en festivalcode2 moet kleiner zijn dan 300.")
+                String errorMessage = messageSource.getMessage("festival.codes.diff.invalid", null, Locale.getDefault());
+                context.buildConstraintViolationWithTemplate(errorMessage)
                         .addPropertyNode("festivalCode2")
                         .addConstraintViolation();
                 valid = false;

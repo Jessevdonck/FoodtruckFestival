@@ -16,4 +16,5 @@ void deleteById(Long id);
 List<FestivalDTO> fetchFestivalOverview();
 int getAvailableTickets(Long festivalId);
 public FestivalDTO findFestivalDTOById(Long id);
+List<Festival> getFestivalsByCategory(Food category);
 }

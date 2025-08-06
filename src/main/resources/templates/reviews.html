@@ -72,7 +72,7 @@
                 <h3 class="write-review-title">Deel jouw ervaring</h3>
                 <p class="write-review-subtitle">Vertel anderen over dit festival</p>
             </div>
-            <a th:href="@{/reviews/write/{festivalId}(festivalId=${festival.id})}" class="btn-write-review">
+            <a th:href="@{/reviews/{id}/add(id=${festival.id})}" class="btn-write-review">
                 <span class="btn-icon">✍️</span>
                 <span class="btn-text">Schrijf een Review</span>
             </a>

@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = FestivalCodesValidator.class)
 @Documented
 public @interface ValidFestivalCodes {
-    String message() default "Ongeldige festivalcodes";
+    String message() default "{festival.code.default}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

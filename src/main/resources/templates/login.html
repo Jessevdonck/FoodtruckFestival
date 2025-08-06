@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="#{login.title}">Login</title>
+    <title th:text="#{login.title}" />
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/login.css}"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
     <div class="login-card">
         <!-- Header -->
         <div class="login-header">
-            <h2 class="login-title" th:text="#{login.header}">Log in with your credentials</h2>
+            <h2 class="login-title" th:text="#{login.header}" />
         </div>
 
         <!-- Errors -->
@@ -30,26 +30,26 @@
         <!-- Login Form -->
         <form name="loginForm" method="post" th:action="@{/login}" class="login-form">
             <div class="form-group">
-                <label for="username" class="form-label" th:text="#{login.usernameLabel}">Username</label>
+                <label for="username" class="form-label" th:text="#{login.usernameLabel}" />
                 <input
                         id="username"
                         name="username"
                         type="text"
                         class="form-input"
-                        placeholder="Enter your username"
+                        th:placeholder="#{login.usernamePlaceholder}"
                         required
                         autocomplete="username"
                 />
             </div>
 
             <div class="form-group">
-                <label for="password" class="form-label" th:text="#{login.passwordLabel}">Password</label>
+                <label for="password" class="form-label" th:text="#{login.passwordLabel}" />
                 <input
                         id="password"
                         name="password"
                         type="password"
                         class="form-input"
-                        placeholder="Enter your password"
+                        th:placeholder="#{login.passwordPlaceholder}"
                         required
                         autocomplete="current-password"
                 />
@@ -59,7 +59,7 @@
                 <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                 </svg>
-                <span th:text="#{login.submitButton}">Sign In</span>
+                <span th:text="#{login.submitButton}" />
             </button>
 
             <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>

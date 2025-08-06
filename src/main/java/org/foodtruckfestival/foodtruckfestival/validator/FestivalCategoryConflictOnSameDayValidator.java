@@ -39,7 +39,7 @@ public class FestivalCategoryConflictOnSameDayValidator implements Validator {
             }
 
             if (existingFestival.getDateTime().toLocalDate().isEqual(targetDate)) {
-                errors.rejectValue("categorie", "festival.categorie.conflictOnDate", "Er vindt al een festival met deze categorie plaats op dezelfde dag.");
+                errors.rejectValue("categorie", "festival.categorie.conflictOnDate");
                 break;
             }
         }

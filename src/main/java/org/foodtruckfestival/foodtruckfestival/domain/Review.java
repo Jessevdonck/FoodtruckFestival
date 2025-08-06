@@ -25,7 +25,7 @@ public class Review
     @Max(5)
     private int score;
 
-    @NotBlank
+    @NotBlank(message = "{review.description.blank}")
     private String description;
 
     @ManyToOne

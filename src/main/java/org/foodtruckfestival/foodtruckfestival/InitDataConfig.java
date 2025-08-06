@@ -2,6 +2,7 @@ package org.foodtruckfestival.foodtruckfestival;
 
 import org.foodtruckfestival.foodtruckfestival.domain.*;
 import org.foodtruckfestival.foodtruckfestival.enums.Food;
+import org.foodtruckfestival.foodtruckfestival.enums.Location;
 import org.foodtruckfestival.foodtruckfestival.enums.Role;
 import org.foodtruckfestival.foodtruckfestival.repository.FestivalRepository;
 import org.foodtruckfestival.foodtruckfestival.repository.MyUserRepository;
@@ -51,7 +52,7 @@ public class InitDataConfig implements CommandLineRunner {
         // FESTIVAL
         Festival festival = Festival.builder()
                 .name("Summer Fest")
-                .location("Amsterdam")
+                .location(Location.KORTRIJK)
                 .categorie(Food.BBQ)
                 .dateTime(LocalDateTime.of(2025, 10, 3, 14, 0))
                 .festivalCode1(120)
@@ -63,7 +64,7 @@ public class InitDataConfig implements CommandLineRunner {
 
             Festival festival2 = Festival.builder()
                     .name("Smul Festival")
-                    .location("Brussel")
+                    .location(Location.GENT)
                     .categorie(Food.MEXICAANS)
                     .dateTime(LocalDateTime.of(2025, 6, 3, 14, 0))
                     .festivalCode1(120)
@@ -72,9 +73,19 @@ public class InitDataConfig implements CommandLineRunner {
                     .price(new BigDecimal("20.00"))
                     .foodtrucks(Arrays.asList("Truck A", "Truck B", "Truck C"))
                     .build();
+                Festival festival3 = Festival.builder()
+                        .name("Gulzig Festival")
+                        .location(Location.ANTWERPEN)
+                        .categorie(Food.MEXICAANS)
+                        .dateTime(LocalDateTime.of(2025, 6, 18, 19, 0))
+                        .festivalCode1(120)
+                        .festivalCode2(210)
+                        .maxTickets(60)
+                        .price(new BigDecimal("39.99"))
+                        .foodtrucks(Arrays.asList("Truck A", "Truck B", "Truck C"))
+                        .build();
 
-        festivalRepository.save(festival);
-        festivalRepository.save(festival2);
+        festivalRepository.saveAll(Arrays.asList(festival, festival2, festival3));
 
         // REGISTRATION
         Registration registration = Registration.builder()
@@ -91,13 +102,19 @@ public class InitDataConfig implements CommandLineRunner {
                 .registrationTime(LocalDateTime.now())
                 .build();
 
-            registrationRepository.save(registration);
-            registrationRepository.save(registration2);
+        Registration registration3 = Registration.builder()
+                .user(admin)
+                .festival(festival3)
+                .amountOfTickets(1)
+                .registrationTime(LocalDateTime.now())
+                .build();
+
+        registrationRepository.saveAll(Arrays.asList(registration, registration2, registration3));
 
         // REVIEW
         Review review = Review.builder()
-                .user(user)
-                .festival(festival)
+                .user(admin)
+                .festival(festival2)
                 .score(4)
                 .description("Great festival with delicious food trucks!")
                 .postedAt(LocalDateTime.now())
