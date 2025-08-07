@@ -1,5 +1,6 @@
     package org.foodtruckfestival.foodtruckfestival.domain;
 
+    import com.fasterxml.jackson.annotation.JsonIgnore;
     import jakarta.persistence.*;
     import lombok.*;
 
@@ -25,6 +26,7 @@
         private MyUser user;
 
         @ManyToOne
+        @JsonIgnore
         private Festival festival;
 
         private LocalDateTime registrationTime;

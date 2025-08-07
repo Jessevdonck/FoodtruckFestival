@@ -1,5 +1,6 @@
 package org.foodtruckfestival.foodtruckfestival.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.foodtruckfestival.foodtruckfestival.enums.Role;
@@ -26,6 +27,7 @@ private Long userId;
 @Column(nullable = false, unique = true)
 private String username;
 
+@JsonIgnore
 @Column(nullable = false)
 private String password;
 
@@ -33,6 +35,7 @@ private String password;
 @Column(length = 20)
 private Role role;
 
+@JsonIgnore
 @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 private List<Registration> registrations = new ArrayList<>();
 

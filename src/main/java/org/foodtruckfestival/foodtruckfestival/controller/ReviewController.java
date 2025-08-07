@@ -1,5 +1,6 @@
 package org.foodtruckfestival.foodtruckfestival.controller;
 
+import jakarta.validation.Valid;
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
 import org.foodtruckfestival.foodtruckfestival.domain.MyUser;
 import org.foodtruckfestival.foodtruckfestival.domain.Review;
@@ -11,6 +12,7 @@ import org.foodtruckfestival.foodtruckfestival.validator.ReviewPermissionValidat
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,9 +56,14 @@ public class ReviewController {
     }
 
     @PostMapping("/{festivalId}/add")
-    public String submitReview(@PathVariable Long festivalId, Review review, Principal principal) {
+    public String submitReview(@PathVariable Long festivalId, @Valid Review review, BindingResult result, Principal principal, Model model) {
         Festival festival = festivalService.findById(festivalId);
         MyUser user = myUserService.findByUsername(principal.getName());
+
+        if(result.hasErrors()) {
+            model.addAttribute("festival", festival);
+            return "review-form";
+        }
 
         review.setUser(user);
         review.setFestival(festival);

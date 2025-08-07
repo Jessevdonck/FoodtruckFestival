@@ -30,7 +30,7 @@ public class SecurityConfig {
                         authorizeHttpRequests(requests -> requests
 
                         // pages that require auth
-                        .requestMatchers("/login","/festivals", "/").permitAll()
+                        .requestMatchers("/login","/festivals", "/", "/error").permitAll()
                         .requestMatchers("/festivals/add","/festivals/edit/**").hasRole(Role.ADMIN.name())
                         .requestMatchers("/dashboard", "/festivals/**","/register/**", "/reviews/**")
                         .hasAnyRole(Role.USER.name(), Role.ADMIN.name())
@@ -40,12 +40,15 @@ public class SecurityConfig {
                         .requestMatchers("/api/festival/**").permitAll()
                         .requestMatchers("/api/festivals").permitAll()
 
+
                         // other stuff
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/i18n/**").permitAll()
                         .requestMatchers("/static/favicon.ico").permitAll()
-                        .requestMatchers("/icons/**").permitAll())
+                        .requestMatchers("/icons/**").permitAll()
+                        .anyRequest().permitAll()
+                        )
                 .formLogin(form -> form.defaultSuccessUrl("/festivals", true)
                         .loginPage("/login")
                         .usernameParameter("username").passwordParameter("password"))
@@ -54,6 +57,7 @@ public class SecurityConfig {
                         )
                 .exceptionHandling(handling -> handling
                         .accessDeniedPage("/error?errorCode=403&errorMessage=Access+Denied"));
+
 
 
         return http.build();

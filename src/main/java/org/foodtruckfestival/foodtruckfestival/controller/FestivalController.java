@@ -92,6 +92,7 @@ public String festivalDetails(@PathVariable Long id, Model model) {
             nameDuplicateOnSameDayValidator.validate(festival, result);
 
             if (result.hasErrors()) {
+                System.out.println("Validation errors: " + result.getAllErrors());
                 model.addAttribute("locaties", Location.values());
                 model.addAttribute("categorieen", Food.values());
                 return "festival-form";

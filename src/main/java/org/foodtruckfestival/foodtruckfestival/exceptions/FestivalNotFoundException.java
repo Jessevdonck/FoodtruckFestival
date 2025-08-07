@@ -7,4 +7,8 @@ public class FestivalNotFoundException extends RuntimeException {
     public FestivalNotFoundException(Integer festivalId) {
         super("Festival not found with ID: " + festivalId);
     }
+
+    public FestivalNotFoundException(String message) {
+        super(message);
+    }
 }

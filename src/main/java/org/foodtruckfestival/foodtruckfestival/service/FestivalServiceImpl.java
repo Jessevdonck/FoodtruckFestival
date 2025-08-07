@@ -4,6 +4,7 @@ import org.foodtruckfestival.foodtruckfestival.domain.Festival;
 import org.foodtruckfestival.foodtruckfestival.dto.FestivalDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.foodtruckfestival.foodtruckfestival.enums.Food;
+import org.foodtruckfestival.foodtruckfestival.exceptions.CategoryNotFoundException;
 import org.foodtruckfestival.foodtruckfestival.exceptions.FestivalNotFoundException;
 import org.foodtruckfestival.foodtruckfestival.exceptions.NoFestivalsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,12 +74,13 @@ public class FestivalServiceImpl implements FestivalService
                     .collect(Collectors.toList());
         }
 
-        public int getAvailableTickets(Long festivalId)
-            {
-                int available = festivalRepository.findAvailableTicketsByFestivalId(festivalId);
+        @Override
+        public int getAvailableTickets(Long festivalId) {
+            festivalRepository.findById(festivalId)
+                    .orElseThrow(() -> new FestivalNotFoundException(festivalId.intValue()));
 
-                return available;
-            }
+            return festivalRepository.findAvailableTicketsByFestivalId(festivalId);
+        }
 
         @Override
         public FestivalDTO findFestivalDTOById(Long id) {
@@ -120,6 +122,12 @@ public class FestivalServiceImpl implements FestivalService
 
         @Override
         public List<Festival> getFestivalsByCategory(Food category) {
-            return festivalRepository.findByCategorie(category);
+            List<Festival> festivals = festivalRepository.findByCategorie(category);
+
+            if (festivals.isEmpty()) {
+                throw new CategoryNotFoundException("No festivals found for category: " + category);
+            }
+
+            return festivals;
         }
     }

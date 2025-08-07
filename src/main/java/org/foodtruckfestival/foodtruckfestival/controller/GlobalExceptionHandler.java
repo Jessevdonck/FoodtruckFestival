@@ -1,6 +1,7 @@
 package org.foodtruckfestival.foodtruckfestival.controller;
 
 import org.foodtruckfestival.foodtruckfestival.exceptions.FestivalConflictException;
+import org.foodtruckfestival.foodtruckfestival.exceptions.FestivalNotFoundException;
 import org.foodtruckfestival.foodtruckfestival.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -39,6 +40,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public String handleUserNotFound(UserNotFoundException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        return "redirect:/error";
+    }
+
+    @ExceptionHandler(FestivalNotFoundException.class)
+    public String handleFestivalNotFound(FestivalNotFoundException ex, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         return "redirect:/error";
     }

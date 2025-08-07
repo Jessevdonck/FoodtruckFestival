@@ -1,10 +1,9 @@
-package perform;
+package org.foodtruckfestival.foodtruckfestival.perform;
 
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
-import java.util.Map;
 
 public class PerformRestFestival {
 
@@ -15,11 +14,20 @@ public class PerformRestFestival {
 
     public PerformRestFestival() {
         System.out.println("---- ---- GET FESTIVALS BY CATEGORY ---- ----");
-        getFestivalsByCategory("BBQ");
+        try {
+            getFestivalsByCategory("BBQ");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("---- ---- ---- ---- ---- ---- ---- ----");
 
         System.out.println("---- ---- GET AVAILABLE TICKETS ---- ----");
-        getAvailableTickets(1L);
+        try {
+            getAvailableTickets(1L);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         System.out.println("---- ---- ---- ---- ---- ---- ---- ----");
     }
 
@@ -40,7 +48,6 @@ public class PerformRestFestival {
                 .bodyToFlux(Festival.class)
                 .collectList()
                 .doOnNext(this::printFestivalList)
-                .doOnError(error -> System.err.println("Error occurred: " + error.getMessage()))
                 .block();
     }
 
@@ -48,9 +55,8 @@ public class PerformRestFestival {
         webClient.get()
                 .uri(SERVER_URI + "/festival/" + festivalId + "/tickets")
                 .retrieve()
-                .bodyToMono(Map.class)
+                .bodyToMono(String.class)
                 .doOnNext(this::printTickets)
-                .doOnError(error -> System.err.println("Error occurred: " + error.getMessage()))
                 .block();
     }
 
@@ -58,8 +64,7 @@ public class PerformRestFestival {
         list.forEach(festival -> System.out.println("Found festival: " + festival.getName()));
     }
 
-    private void printTickets(Map<String, Integer> response) {
-        System.out.println("Festival ID: " + response.get("festivalId"));
-        System.out.println("Available Tickets: " + response.get("availableTickets"));
+    private void printTickets(String response) {
+        System.out.println("Aantal beschikbare tickets: " + response);
     }
 }

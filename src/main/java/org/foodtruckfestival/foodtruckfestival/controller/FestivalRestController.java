@@ -10,15 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api")
 public class FestivalRestController {
 
-    private final FestivalService festivalService;
-
     @Autowired
-    public FestivalRestController(FestivalService festivalService) {
-        this.festivalService = festivalService;
-    }
+    FestivalService festivalService;
 
     // 1. Ophalen van festivals van een categorie
     @GetMapping("/festivals")
@@ -28,9 +24,8 @@ public class FestivalRestController {
 
     // 2. Ophalen van aantal beschikbare tickets van een festival
     @GetMapping("/festival/{id}/tickets")
-    public Map<String, Integer> getAvailableTickets(@PathVariable Long id) {
-        int tickets = festivalService.getAvailableTickets(id);
-        return Map.of("festivalId", id.intValue(), "availableTickets", tickets);
+    public int getAvailableTickets(@PathVariable Long id) {
+        return festivalService.getAvailableTickets(id);
     }
 }
 

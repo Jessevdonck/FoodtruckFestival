@@ -32,7 +32,7 @@ public class RegistrationController {
 
     @GetMapping("/{festivalId}")
     public String showRegistrationForm(@PathVariable Long festivalId, Model model) {
-        Festival festival = festivalService.findById(festivalId);
+        FestivalDTO festival = festivalService.findFestivalDTOById(festivalId);
         model.addAttribute("festival", festival);
         model.addAttribute("registrationRequest", new RegistrationRequest());
 
