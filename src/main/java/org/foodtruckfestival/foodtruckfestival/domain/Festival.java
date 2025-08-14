@@ -11,6 +11,8 @@ import org.foodtruckfestival.foodtruckfestival.enums.Food;
 import org.foodtruckfestival.foodtruckfestival.enums.Location;
 import org.foodtruckfestival.foodtruckfestival.utils.LocalDateTimeDeserializer;
 import org.foodtruckfestival.foodtruckfestival.utils.LocalDateTimeSerializer;
+import org.foodtruckfestival.foodtruckfestival.utils.TicketPriceDeserializer;
+import org.foodtruckfestival.foodtruckfestival.utils.TicketPriceSerializer;
 import org.foodtruckfestival.foodtruckfestival.validator.NoDuplicateFoodtrucks;
 import org.foodtruckfestival.foodtruckfestival.validator.ValidFestivalCodes;
 import org.foodtruckfestival.foodtruckfestival.validator.ValidFestivalDate;
@@ -82,6 +84,8 @@ public class Festival
 
     @NotNull(message = "{festival.price.blank}")
     @ValidPrice
+    @JsonSerialize(using = TicketPriceSerializer.class)
+    @JsonDeserialize(using = TicketPriceDeserializer.class)
     private BigDecimal price;
 
     @OneToMany(mappedBy = "festival")

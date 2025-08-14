@@ -97,8 +97,10 @@
     <div class="foodtrucks-card">
         <h2 class="foodtrucks-title">Foodtrucks</h2>
 
-        <div th:if="${festival.foodtrucks != null}" class="foodtrucks-grid">
-            <div th:each="truck : ${festival.foodtrucks}" class="foodtruck-item">
+        <div th:if="${festival.getFoodtrucks() != null and !#lists.isEmpty(festival.getFoodtrucks())}" class="foodtrucks-grid">
+            <div th:each="truck : ${festival.getFoodtrucks()}"
+                 th:if="${!#strings.isEmpty(truck)}"
+                 class="foodtruck-item">
                 <span class="foodtruck-name" th:text="${truck}">Truck naam</span>
             </div>
         </div>
