@@ -1,10 +1,15 @@
 package org.foodtruckfestival.foodtruckfestival.domain;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.foodtruckfestival.foodtruckfestival.enums.Food;
 import org.foodtruckfestival.foodtruckfestival.enums.Location;
+import org.foodtruckfestival.foodtruckfestival.utils.LocalDateTimeDeserializer;
+import org.foodtruckfestival.foodtruckfestival.utils.LocalDateTimeSerializer;
 import org.foodtruckfestival.foodtruckfestival.validator.NoDuplicateFoodtrucks;
 import org.foodtruckfestival.foodtruckfestival.validator.ValidFestivalCodes;
 import org.foodtruckfestival.foodtruckfestival.validator.ValidFestivalDate;
@@ -22,6 +27,21 @@ import java.util.List;
 @Builder
 @ValidFestivalCodes
 @ValidFestivalDate
+@JsonPropertyOrder({
+        "id",
+        "name",
+        "foodtrucks",
+        "location",
+        "categorie",
+        "dateTime",
+        "festivalCode1",
+        "festivalCode2",
+        "maxTickets",
+        "price",
+        "availableTickets",
+        "registrations",
+        "reviews"
+})
 public class Festival
     {
 
@@ -47,6 +67,8 @@ public class Festival
     private Food categorie;
 
     @NotNull(message = "{festival.date.blank}")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime dateTime;
 
     private int festivalCode1;
@@ -72,5 +94,5 @@ public class Festival
         int soldTickets = registrations.stream().mapToInt(Registration::getAmountOfTickets).sum();
         return maxTickets - soldTickets;
     }
-    }
+}
 
