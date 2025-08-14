@@ -131,7 +131,7 @@ class FestivalControllerTest {
 
 
     @Test
-    @WithMockUser(username = "adminm", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void testShowEditFestivalForm() throws Exception {
         when(festivalService.findById(1L)).thenReturn(exampleFestival);
 
