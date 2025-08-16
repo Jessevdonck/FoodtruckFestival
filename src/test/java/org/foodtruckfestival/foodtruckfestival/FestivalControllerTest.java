@@ -173,7 +173,6 @@ class FestivalControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void testProcessFestivalForm_InvalidData() throws Exception {
-        // Simuleer dat validator errors toevoegen
         doAnswer(invocation -> {
             Object target = invocation.getArgument(0);
             BindingResult bindingResult = invocation.getArgument(1);
@@ -184,7 +183,7 @@ class FestivalControllerTest {
         doNothing().when(categoryConflictOnSameDayValidator).validate(any(), any());
 
         mockMvc.perform(post("/festivals/edit/1")
-                        .param("name", "")
+                        .param("name", "123nietgeldig")
                         .param("dateTime", "2025-09-02T14:00")
                         .param("location", "KORTRIJK")
                         .param("categorie", "MEXICAANS")

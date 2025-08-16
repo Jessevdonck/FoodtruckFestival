@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.FestivalRepository;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,8 +32,8 @@ public class FestivalServiceImpl implements FestivalService
         return festivalRepository.findAll();
         }
 
-            @Override
-            public Festival save(Festival festival) {
+        @Override
+        public Festival save(Festival festival) {
                 return festivalRepository.save(festival);
             }
 
@@ -47,15 +45,17 @@ public class FestivalServiceImpl implements FestivalService
 
         @Override
         public List<FestivalDTO> fetchFestivalOverview() {
-            List<Festival> festivals = festivalRepository.findAll();
+            List<Festival> festivals = festivalRepository.findAllByOrderByCategorieAsc();
+
             if (festivals.isEmpty()) {
                 throw new NoFestivalsException("No Festivals found");
             }
 
             return festivals.stream()
-                    .sorted(Comparator.comparing(Festival::getDateTime))
                     .map(festival -> {
-                        int registrations = festival.getRegistrations().stream().mapToInt(r -> r.amountOfTickets).sum();
+                        int registrations = festival.getRegistrations().stream()
+                                .mapToInt(r -> r.amountOfTickets)
+                                .sum();
                         int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
                         boolean isFuture = festival.getDateTime().isAfter(LocalDateTime.now());
 
@@ -66,13 +66,14 @@ public class FestivalServiceImpl implements FestivalService
                                 festival.getCategorie().toString(),
                                 festival.getDateTime(),
                                 availableTickets,
-                                festival.getPrice() ,
+                                festival.getPrice(),
                                 registrations,
                                 festival.getFoodtrucks()
                         );
                     })
-                    .collect(Collectors.toList());
+                    .toList();
         }
+
 
         @Override
         public int getAvailableTickets(Long festivalId) {
