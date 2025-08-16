@@ -45,7 +45,7 @@ public class FestivalCodesValidator implements ConstraintValidator<ValidFestival
 
         if (code1 != null && code2 != null) {
             if (Math.abs(code1 - code2) >= 300) {
-                String errorMessage = messageSource.getMessage("festival.codes.diff.invalid", null, Locale.getDefault());
+                String errorMessage = messageSource.getMessage("festival.codes.diff.invalid", new Object[]{300}, Locale.getDefault());
                 context.buildConstraintViolationWithTemplate(errorMessage)
                         .addPropertyNode("festivalCode2")
                         .addConstraintViolation();
