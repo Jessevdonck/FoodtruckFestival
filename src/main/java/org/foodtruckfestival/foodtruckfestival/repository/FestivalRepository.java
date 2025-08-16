@@ -17,5 +17,5 @@ public interface FestivalRepository extends JpaRepository<Festival, Long>
     Integer findAvailableTicketsByFestivalId(@Param("festivalId") Long festivalId);
     List<Festival> findByName(String name);
     List<Festival> findByCategorie(Food categorie);
-    List<Festival> findAllByOrderByCategorieAsc();
+    List<Festival> findAllByOrderByDateTimeAsc();
     }

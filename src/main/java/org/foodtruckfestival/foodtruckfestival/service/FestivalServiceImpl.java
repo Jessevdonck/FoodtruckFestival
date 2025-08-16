@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.FestivalRepository;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -45,35 +47,32 @@ public class FestivalServiceImpl implements FestivalService
 
         @Override
         public List<FestivalDTO> fetchFestivalOverview() {
-            List<Festival> festivals = festivalRepository.findAllByOrderByCategorieAsc();
-
+            List<Festival> festivals = festivalRepository.findAllByOrderByDateTimeAsc();
             if (festivals.isEmpty()) {
                 throw new NoFestivalsException("No Festivals found");
             }
 
             return festivals.stream()
-                    .map(festival -> {
-                        int registrations = festival.getRegistrations().stream()
-                                .mapToInt(r -> r.amountOfTickets)
-                                .sum();
-                        int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
-                        boolean isFuture = festival.getDateTime().isAfter(LocalDateTime.now());
-
-                        return new FestivalDTO(
-                                festival.getId(),
-                                festival.getName(),
-                                festival.getLocation().name(),
-                                festival.getCategorie().toString(),
-                                festival.getDateTime(),
-                                availableTickets,
-                                festival.getPrice(),
-                                registrations,
-                                festival.getFoodtrucks()
-                        );
-                    })
-                    .toList();
+                    .map(this::getFestivalDTO)
+                    .collect(Collectors.toList());
         }
 
+        private FestivalDTO getFestivalDTO(Festival festival) {
+            int registrations = festival.getRegistrations().stream().mapToInt(r -> r.amountOfTickets).sum();
+            int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
+
+            return new FestivalDTO(
+                    festival.getId(),
+                    festival.getName(),
+                    festival.getLocation().name(),
+                    festival.getCategorie().toString(),
+                    festival.getDateTime(),
+                    availableTickets,
+                    festival.getPrice() ,
+                    registrations,
+                    festival.getFoodtrucks()
+            );
+        }
 
         @Override
         public int getAvailableTickets(Long festivalId) {
@@ -87,20 +86,7 @@ public class FestivalServiceImpl implements FestivalService
         public FestivalDTO findFestivalDTOById(Long id) {
             Festival festival = festivalRepository.findById(id).orElseThrow(()->new FestivalNotFoundException(id.intValue()));
 
-            int registrationsCount = festival.getRegistrations().stream().mapToInt(r -> r.amountOfTickets).sum();
-            int availableTickets = festivalRepository.findAvailableTicketsByFestivalId(festival.getId());
-
-            return new FestivalDTO(
-                    festival.getId(),
-                    festival.getName(),
-                    festival.getLocation().name(),
-                    festival.getCategorie().toString(),
-                    festival.getDateTime(),
-                    availableTickets,
-                    festival.getPrice(),
-                    registrationsCount,
-                    festival.getFoodtrucks()
-            );
+            return getFestivalDTO(festival);
         }
 
         @Override
