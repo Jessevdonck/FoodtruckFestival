@@ -161,6 +161,13 @@
                         <span class="btn-icon">📋</span>
                         Alle Festivals
                     </a>
+
+                    <a th:if="${userRole == 'admin'}"
+                       th:href="@{/festivals/edit/{id}(id=${festival.id})}"
+                       class="btn btn-secondary">
+                        <span class="btn-icon">✏️</span>
+                        Festival Bewerken
+                    </a>
                 </div>
             </form>
         </div>
@@ -179,6 +186,12 @@
                 <a th:href="@{/festivals}" class="btn btn-secondary">
                     <span class="btn-icon">📋</span>
                     Alle Festivals
+                </a>
+                <a th:if="${userRole == 'admin'}"
+                   th:href="@{/festivals/edit/{id}(id=${festival.id})}"
+                   class="btn btn-secondary">
+                    <span class="btn-icon">✏️</span>
+                    Festival Bewerken
                 </a>
             </div>
         </div>
