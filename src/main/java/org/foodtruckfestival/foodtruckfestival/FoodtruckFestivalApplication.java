@@ -16,9 +16,7 @@ public class FoodtruckFestivalApplication implements WebMvcConfigurer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FoodtruckFestivalApplication.class, args);
-
 			new PerformRestFestival();
-
 	}
 
 	@Bean

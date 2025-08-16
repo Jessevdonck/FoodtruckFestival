@@ -3,7 +3,6 @@ package org.foodtruckfestival.foodtruckfestival.service;
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
 import org.foodtruckfestival.foodtruckfestival.domain.MyUser;
 import org.foodtruckfestival.foodtruckfestival.domain.Review;
-import org.foodtruckfestival.foodtruckfestival.exceptions.ReviewNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.ReviewRepository;
@@ -27,7 +26,7 @@ public class ReviewServiceImpl implements ReviewService
 
         @Override
         public List<Review> getReviewsForFestival(Festival festival) {
-            return reviewRepository.findByFestivalOrderByPostedAtDesc(festival);
+            return reviewRepository.findByFestivalOrderByScoreDesc(festival);
         }
 
         @Override

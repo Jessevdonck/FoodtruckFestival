@@ -28,7 +28,7 @@ public class RegistrationServiceImpl implements RegistrationService
 
         @Override
         public Registration findById(Long id) {
-            return registrationRepository.findById(id).orElseThrow(()->new RegistrationNotFoundException(id));
+            return registrationRepository.findById(id).orElseThrow(()->new RegistrationNotFoundException("registration.notfound"));
         }
 
         @Override
@@ -49,7 +49,7 @@ public class RegistrationServiceImpl implements RegistrationService
         public String registerForFestival(Long festivalId, String username, int ticketsToBuy) {
 
             Festival festival = festivalRepository.findById(festivalId)
-                    .orElseThrow(() -> new RuntimeException("Festival niet gevonden"));
+                    .orElseThrow(() -> new RuntimeException("festival.notfound"));
 
             MyUser user = myUserRepository.findByUsername(username);
 
@@ -68,7 +68,7 @@ public class RegistrationServiceImpl implements RegistrationService
         @Override
         public int countTicketsForUserInFestivalPeriod(String username, Long festivalId) {
             Festival festival = festivalRepository.findById(festivalId)
-                    .orElseThrow(() -> new RuntimeException("Festival niet gevonden"));
+                    .orElseThrow(() -> new RuntimeException("festival.notfound"));
 
             MyUser user = myUserRepository.findByUsername(username);
 

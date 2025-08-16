@@ -8,11 +8,13 @@ import org.foodtruckfestival.foodtruckfestival.exceptions.CategoryNotFoundExcept
 import org.foodtruckfestival.foodtruckfestival.exceptions.FestivalNotFoundException;
 import org.foodtruckfestival.foodtruckfestival.exceptions.NoFestivalsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.FestivalRepository;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,9 +26,12 @@ public class FestivalServiceImpl implements FestivalService
         @Autowired
         private FestivalRepository festivalRepository;
 
+        @Autowired
+        private MessageSource messageSource;
+
         @Override
         public Festival findById(Long id) {
-        return festivalRepository.findById(id).orElseThrow(()->new FestivalNotFoundException(id.intValue()));
+        return festivalRepository.findById(id).orElseThrow(()->new FestivalNotFoundException(id.intValue(), messageSource));
         }
 
         @Override
@@ -49,7 +54,7 @@ public class FestivalServiceImpl implements FestivalService
         public List<FestivalDTO> fetchFestivalOverview() {
             List<Festival> festivals = festivalRepository.findAllByOrderByDateTimeAsc();
             if (festivals.isEmpty()) {
-                throw new NoFestivalsException("No Festivals found");
+                throw new NoFestivalsException("festival.notfound");
             }
 
             return festivals.stream()
@@ -77,14 +82,14 @@ public class FestivalServiceImpl implements FestivalService
         @Override
         public int getAvailableTickets(Long festivalId) {
             festivalRepository.findById(festivalId)
-                    .orElseThrow(() -> new FestivalNotFoundException(festivalId.intValue()));
+                    .orElseThrow(() -> new FestivalNotFoundException(festivalId.intValue(), messageSource));
 
             return festivalRepository.findAvailableTicketsByFestivalId(festivalId);
         }
 
         @Override
         public FestivalDTO findFestivalDTOById(Long id) {
-            Festival festival = festivalRepository.findById(id).orElseThrow(()->new FestivalNotFoundException(id.intValue()));
+            Festival festival = festivalRepository.findById(id).orElseThrow(()->new FestivalNotFoundException(id.intValue(), messageSource));
 
             return getFestivalDTO(festival);
         }
@@ -92,7 +97,7 @@ public class FestivalServiceImpl implements FestivalService
         @Override
         public Festival updateFestival(Long id, Festival updatedFestival) {
             Festival existingFestival = festivalRepository.findById(id)
-                    .orElseThrow(() -> new FestivalNotFoundException(id.intValue()));
+                    .orElseThrow(() -> new FestivalNotFoundException(id.intValue(), messageSource));
 
             existingFestival.setName(updatedFestival.getName());
             existingFestival.setFoodtrucks(updatedFestival.getFoodtrucks());
@@ -112,7 +117,12 @@ public class FestivalServiceImpl implements FestivalService
             List<Festival> festivals = festivalRepository.findByCategorie(category);
 
             if (festivals.isEmpty()) {
-                throw new CategoryNotFoundException("No festivals found for category: " + category);
+                String errorMessage = messageSource.getMessage(
+                        "festival.category.notfound",
+                        new Object[]{category},
+                        Locale.getDefault()
+                );
+                throw new CategoryNotFoundException(errorMessage);
             }
 
             return festivals;

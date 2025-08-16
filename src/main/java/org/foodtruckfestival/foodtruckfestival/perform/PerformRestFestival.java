@@ -1,23 +1,25 @@
 package org.foodtruckfestival.foodtruckfestival.perform;
 
+import jakarta.annotation.PostConstruct;
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import java.util.List;
 
+@Component
 public class PerformRestFestival {
 
-    // Base URL of the REST API
     private final String SERVER_URI = "http://localhost:8080/api";
-    // WebClient instance
     private final WebClient webClient = WebClient.create();
 
-    public PerformRestFestival() {
+    @PostConstruct
+    public void init() {
         System.out.println("---- ---- GET FESTIVALS BY CATEGORY ---- ----");
         try {
-            getFestivalsByCategory("BBQ");
+            getFestivalsByCategory("AZE"); // foute parameter
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
         System.out.println("---- ---- ---- ---- ---- ---- ---- ----");
 
@@ -25,46 +27,53 @@ public class PerformRestFestival {
         try {
             getAvailableTickets(1L);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
-
         System.out.println("---- ---- ---- ---- ---- ---- ---- ----");
     }
 
-    public static void main(String[] args) {
-        new PerformRestFestival();
-    }
-
     private void getFestivalsByCategory(String category) {
-        webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .scheme("http")
-                        .host("localhost")
-                        .port(8080)
-                        .path("/api/festivals")
-                        .queryParam("category", category)
-                        .build())
-                .retrieve()
-                .bodyToFlux(Festival.class)
-                .collectList()
-                .doOnNext(this::printFestivalList)
-                .block();
+        try {
+            List<Festival> festivals = webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .scheme("http")
+                            .host("localhost")
+                            .port(8080)
+                            .path("/api/festivals")
+                            .queryParam("category", category)
+                            .build())
+                    .retrieve()
+                    .bodyToFlux(Festival.class)
+                    .collectList()
+                    .block();
+
+            if (festivals != null && !festivals.isEmpty()) {
+                festivals.forEach(f -> System.out.println("Found festival: " + f.getName()));
+            } else {
+                System.out.println("No festivals found for category: " + category);
+            }
+
+        } catch (WebClientResponseException.NotFound e) {
+            System.out.println("Festival not found for category: " + category);
+        } catch (Exception e) {
+            System.out.println("Error fetching festivals: " + e.getMessage());
+        }
     }
 
     private void getAvailableTickets(Long festivalId) {
-        webClient.get()
-                .uri(SERVER_URI + "/festival/" + festivalId + "/tickets")
-                .retrieve()
-                .bodyToMono(String.class)
-                .doOnNext(this::printTickets)
-                .block();
-    }
+        try {
+            String response = webClient.get()
+                    .uri(SERVER_URI + "/festival/" + festivalId + "/tickets")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
 
-    private void printFestivalList(List<Festival> list) {
-        list.forEach(festival -> System.out.println("Found festival: " + festival.getName()));
-    }
+            System.out.println("Aantal beschikbare tickets: " + response);
 
-    private void printTickets(String response) {
-        System.out.println("Aantal beschikbare tickets: " + response);
+        } catch (WebClientResponseException.NotFound e) {
+            System.out.println("Festival not found with ID: " + festivalId);
+        } catch (Exception e) {
+            System.out.println("Error fetching tickets: " + e.getMessage());
+        }
     }
 }

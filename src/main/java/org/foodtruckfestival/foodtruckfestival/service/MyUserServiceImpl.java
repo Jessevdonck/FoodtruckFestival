@@ -3,17 +3,22 @@ package org.foodtruckfestival.foodtruckfestival.service;
 import org.foodtruckfestival.foodtruckfestival.domain.MyUser;
 import org.foodtruckfestival.foodtruckfestival.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.MyUserRepository;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class MyUserServiceImpl implements MyUserService
     {
 
     private final MyUserRepository myUserRepository;
+
+    @Autowired
+    MessageSource messageSource;
 
     @Autowired
     public MyUserServiceImpl(MyUserRepository myUserRepository)
@@ -34,7 +39,12 @@ public class MyUserServiceImpl implements MyUserService
 
             if(myUser==null)
             {
-                throw new UserNotFoundException();
+                String errorMessage = messageSource.getMessage(
+                        "user.notfound",
+                        new Object[]{username},
+                        Locale.getDefault()
+                );
+                throw new UserNotFoundException(errorMessage);
             }
             return myUser;
         }

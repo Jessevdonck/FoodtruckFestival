@@ -1,6 +1,7 @@
 package org.foodtruckfestival.foodtruckfestival.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -89,9 +90,11 @@ public class Festival
     private BigDecimal price;
 
     @OneToMany(mappedBy = "festival")
+    @JsonManagedReference
     private List<Registration> registrations;
 
     @OneToMany(mappedBy = "festival")
+    @JsonManagedReference
     private List<Review> reviews;
 
     @Transient

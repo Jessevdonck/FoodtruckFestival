@@ -1,5 +1,6 @@
 package org.foodtruckfestival.foodtruckfestival.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -32,6 +33,7 @@ public class Review
     private MyUser user;
 
     @ManyToOne
+    @JsonBackReference
     private Festival festival;
 
     private LocalDateTime postedAt;
