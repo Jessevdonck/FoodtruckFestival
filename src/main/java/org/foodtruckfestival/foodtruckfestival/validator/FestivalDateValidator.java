@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.foodtruckfestival.foodtruckfestival.domain.Festival;
 import org.foodtruckfestival.foodtruckfestival.utils.FestivalConstants;
+import org.foodtruckfestival.foodtruckfestival.utils.InitFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 
@@ -28,9 +29,13 @@ public class FestivalDateValidator implements ConstraintValidator<ValidFestivalD
 
             String errorMessage = messageSource.getMessage(
                     "festival.date.invalid",
-                    new Object[]{FestivalConstants.START_DATE, FestivalConstants.END_DATE},
+                    new Object[]{
+                            FestivalConstants.START_DATE.format(InitFormatter.DATE_FORMATTER),
+                            FestivalConstants.END_DATE.format(InitFormatter.DATE_FORMATTER)
+                    },
                     Locale.getDefault()
             );
+
 
             context.buildConstraintViolationWithTemplate(errorMessage)
                     .addPropertyNode("dateTime")
