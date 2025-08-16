@@ -20,23 +20,18 @@ import org.foodtruckfestival.foodtruckfestival.service.FestivalService;
 @RequestMapping("/festivals")
 public class FestivalController {
 
-private final FestivalService festivalService;
-
 @Autowired
 FestivalCategoryConflictOnSameDayValidator categoryConflictOnSameDayValidator;
 
 @Autowired
 FestivalNameDuplicateOnSameDayValidator nameDuplicateOnSameDayValidator;
 
-@Autowired
-public FestivalController(FestivalService festivalService) {
-this.festivalService = festivalService;
-}
+@Autowired FestivalService festivalService;
 
 @GetMapping
 public String getFestivals(Model model) {
-model.addAttribute("festivals", festivalService.fetchFestivalOverview());
-return "festivals";
+    model.addAttribute("festivals", festivalService.fetchFestivalOverview());
+    return "festivals";
 }
 
 @GetMapping("/{id}")

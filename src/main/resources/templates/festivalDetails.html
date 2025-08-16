@@ -82,7 +82,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="info-item registrations">
+                <li class="info-item registrations" th:if="${userRole == 'admin'}">
                     <div class="info-icon"></div>
                     <div class="info-content">
                         <div class="info-label">Aantal inschrijvingen</div>
@@ -115,7 +115,7 @@
     <div class="action-buttons">
 
         <!-- Form only visible if tickets are available, date is in future, and userRole is user -->
-        <div th:if="${festival.availableTickets > 0} and ${festival.dateTime > T(java.time.LocalDateTime).now()}">
+        <div th:if="${festival.availableTickets > 0} and ${festival.dateTime > T(java.time.LocalDateTime).now()} and ${userRole != null}">
             <form th:action="@{/register/{festivalId}(festivalId=${festival.id})}"
                   th:object="${registrationRequest}"
                   method="post"
@@ -166,7 +166,7 @@
         </div>
 
         <!-- Message if user cannot register -->
-        <div th:unless="${festival.availableTickets > 0} and ${festival.dateTime > T(java.time.LocalDateTime).now()} and ${userRole == 'user'}">
+        <div th:unless="${festival.availableTickets > 0} and ${festival.dateTime > T(java.time.LocalDateTime).now()} and ${userRole != null}">
             <p class="info-message">
                 <strong>Tickets boeken is niet meer mogelijk voor dit festival.</strong>
             </p>

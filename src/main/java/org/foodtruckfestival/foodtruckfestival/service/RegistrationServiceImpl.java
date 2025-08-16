@@ -6,11 +6,13 @@ import org.foodtruckfestival.foodtruckfestival.domain.Registration;
 import org.foodtruckfestival.foodtruckfestival.exceptions.RegistrationNotFoundException;
 import org.foodtruckfestival.foodtruckfestival.repository.FestivalRepository;
 import org.foodtruckfestival.foodtruckfestival.repository.MyUserRepository;
+import org.foodtruckfestival.foodtruckfestival.utils.FestivalConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.foodtruckfestival.foodtruckfestival.repository.RegistrationRepository;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -70,10 +72,10 @@ public class RegistrationServiceImpl implements RegistrationService
 
             MyUser user = myUserRepository.findByUsername(username);
 
-            LocalDateTime startOfMonth = festival.getDateTime().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
-            LocalDateTime endOfMonth = startOfMonth.plusMonths(1).minusNanos(1);
+            LocalDateTime startOfPeriod = FestivalConstants.START_DATE.atTime(LocalTime.of(0,0,0));
+            LocalDateTime endOfPeriod = FestivalConstants.END_DATE.atTime(LocalTime.of(23, 59, 59));
 
-            Integer total = registrationRepository.totalTicketsByUserInPeriod(user, startOfMonth, endOfMonth);
+            Integer total = registrationRepository.totalTicketsByUserInPeriod(user, startOfPeriod, endOfPeriod);
 
             return total != null ? total : 0;
         }
